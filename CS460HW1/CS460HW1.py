@@ -116,13 +116,16 @@ def attribute_entropy(col, col_num, num_rows, bins, dataset):
     print(dataset)
     return final
 
+# calculate information gain
+def information_gain(class_entropy, attribute_entropy):
+    return class_entropy - attribute_entropy
 
 # ~~~~~~~~~~ MAIN ~~~~~~~~~~ #
 columns = []
 attribute = []
 
 # read in .csv file
-file = open('synthetic-2.csv')
+file = open('synthetic-1.csv')
 
 reader = csv.reader(file, delimiter=',')
 data = list(reader)
@@ -141,7 +144,14 @@ for i in range(0, num_cols):
 class_e = class_entropy(columns[num_cols - 1], num_rows, 2)
 print(class_e)
 
-# calculate entropy for attributes
+# calculate entropy and information gain for first column
 attribute_e1 = attribute_entropy(columns[0], 0, num_rows, 5, data)
+info_gain1 = information_gain(class_e, attribute_e1)
 print(attribute_e1)
+print(info_gain1)
 
+# calculate entropy and information gain for second column
+attribute_e2 = attribute_entropy(columns[1], 1, num_rows, 5, data)
+info_gain2 = information_gain(class_e, attribute_e2)
+print(attribute_e2)
+print(info_gain2)
