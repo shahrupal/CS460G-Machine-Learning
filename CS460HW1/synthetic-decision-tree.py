@@ -110,15 +110,55 @@ def information_gain(class_entropy, attribute_entropy):
     return class_entropy - attribute_entropy
 
 # ID3 algorithm
-# def id3():
+# make attributes an array of column names
+def id3(training, target, attributes, root, info_gain1, info_gain2, new_data):
+
+    bin1_data = []
+    bin2_data = []
+
+    # create root node
+    if info_gain1 > info_gain2:
+        root = 'A'
+        for row in new_data:
+            if row[0] == 'x1':
+                bin1_data.append(row)
+            else:
+                bin2_data.append(row)
+    else:
+        root = 'B'
+        for row in new_data:
+            if row[0] == 'y1':
+                bin1_data.append(row)
+            else:
+                bin2_data.append(row)
+
+    # if all training data has same class label, return that label
+    class_count = class_counter(new_data[2])
+    if class_count[0] == len(new_data[2]):
+        return new_data[2][0]
+
+    # if no more attributes, return label of highest probability
+    prob0 = 0
+    prob1 = 0
+    if len(attributes) == 0:
+        for row in new_data:
+            if row[2] == 0:
+                prob0 += 1
+            else:
+                prob1 += 1
+        if prob0 > prob1:
+            return 0
+        else:
+            return 1
+
+    
 
 # ~~~~~~~~~~ MAIN ~~~~~~~~~~ #
 columns = []
 attribute = []
 
 # read in .csv file
-file_name = 'synthetic-1' \
-            '.csv'
+file_name = 'synthetic-1.csv'
 file = open(file_name)
 
 reader = csv.reader(file, delimiter=',')
@@ -169,45 +209,50 @@ print(info_gain2)
 # ~~~~~~~~~~~~~~~~~~~~~~~~ ID3 ~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 # find root node
-
-# COLUMN A #
 if info_gain1 > info_gain2:
-
     root = 'A'
-
-    if attribute_e1 == 0:
-        decision = columns[2][1]
-    else:
-
-        bin1_data = []
-        bin2_data = []
-
-        # only look at bin1 information
-        for row in new_data:
-            if row[0] == 'x1':
-                bin1_data.append(row[0])
-            else:
-                bin2_data.append(row[0])
-
-        # calculate information gain of first bin
-        minimum = min(bin1_data[0])
-        maximum = max(bin1_data[0])
-        avg = (minimum + maximum) / 2
-        class_e = class_entropy(columns[num_cols - 1], len(bin1_data[0]), 2)
-        new_data, attribute_e1 = attribute_entropy(bin1_data[2], avg, 0, len(bin1_data[0]), data, 'n')
-        info_gain1 = information_gain(class_e, attribute_e1)
-
-        # calculate information gain of second bin
-        minimum = min(bin2_data[0])
-        maximum = max(bin2_data[0])
-        avg = (minimum + maximum) / 2
-        class_e = class_entropy(columns[num_cols - 1], len(bin2_data[0]), 2)
-        new_data, attribute_e2 = attribute_entropy(bin2_data[2], avg, 0, len(bin2_data[0]), data, 'n')
-        info_gain2 = information_gain(class_e, attribute_e2)
-
-# COLUMN B #
 else:
     root = 'B'
+
+
+# # COLUMN A #
+# if info_gain1 > info_gain2:
+#
+#     root = 'A'
+#
+#     if attribute_e1 == 0:
+#         decision = columns[2][1]
+#     else:
+#
+#         bin1_data = []
+#         bin2_data = []
+#
+#         # only look at bin1 information
+#         for row in new_data:
+#             if row[0] == 'x1':
+#                 bin1_data.append(row[0])
+#             else:
+#                 bin2_data.append(row[0])
+#
+#         # calculate information gain of first bin
+#         minimum = min(bin1_data[0])
+#         maximum = max(bin1_data[0])
+#         avg = (minimum + maximum) / 2
+#         class_e = class_entropy(columns[num_cols - 1], len(bin1_data[0]), 2)
+#         new_data, attribute_e1 = attribute_entropy(bin1_data[2], avg, 0, len(bin1_data[0]), data, 'x')
+#         info_gain1 = information_gain(class_e, attribute_e1)
+#
+#         # calculate information gain of second bin
+#         minimum = min(bin2_data[0])
+#         maximum = max(bin2_data[0])
+#         avg = (minimum + maximum) / 2
+#         class_e = class_entropy(columns[num_cols - 1], len(bin2_data[0]), 2)
+#         new_data, attribute_e2 = attribute_entropy(bin2_data[2], avg, 0, len(bin2_data[0]), data, 'x')
+#         info_gain2 = information_gain(class_e, attribute_e2)
+#
+# # COLUMN B #
+# else:
+#     root = 'B'
 
 # branch off root node by using bi
 
