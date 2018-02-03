@@ -7,6 +7,7 @@ import math
 def class_counter(col):
 
     count = []
+
     # prints each class
     classes = list(set(col))
 
@@ -101,7 +102,8 @@ def attribute_entropy(col, boundary, col_num, num_rows, dataset, string_name):
         final += entropy
 
     print(dataset)
-    return final
+    return dataset, final
+
 
 # calculate information gain
 def information_gain(class_entropy, attribute_entropy):
@@ -115,7 +117,8 @@ columns = []
 attribute = []
 
 # read in .csv file
-file_name = 'synthetic-2.csv'
+file_name = 'synthetic-1' \
+            '.csv'
 file = open(file_name)
 
 reader = csv.reader(file, delimiter=',')
@@ -136,6 +139,8 @@ class_e = class_entropy(columns[num_cols - 1], num_rows, 2)
 print(class_e)
 
 # create boundaries to discretize from - DONE MANUALLY (change for each .csv file)
+boundary1 = 0
+boundary2 = 0
 if file_name == 'synthetic-1.csv':
     boundary1 = 4.6121
     boundary2 = 2.91305
@@ -150,21 +155,61 @@ elif file_name == 'synthetic-4.csv':
     boundary2 = 0.6385
 
 # calculate entropy and information gain for first column
-attribute_e1 = attribute_entropy(columns[0], boundary1, 0, num_rows, data, 'x')
+new_data, attribute_e1 = attribute_entropy(columns[0], boundary1, 0, num_rows, data, 'x')
 info_gain1 = information_gain(class_e, attribute_e1)
 print(attribute_e1)
 print(info_gain1)
 
 # calculate entropy and information gain for second column
-attribute_e2 = attribute_entropy(columns[1], boundary2, 1, num_rows, data, 'y')
+new_data, attribute_e2 = attribute_entropy(columns[1], boundary2, 1, num_rows, data, 'y')
 info_gain2 = information_gain(class_e, attribute_e2)
 print(attribute_e2)
 print(info_gain2)
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~ ID3 ~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-# # find root node
-# if info_gain1 > info_gain2: root = 'A'
-# else: root = 'B'
+# find root node
+
+# COLUMN A #
+if info_gain1 > info_gain2:
+
+    root = 'A'
+
+    if attribute_e1 == 0:
+        decision = columns[2][1]
+    else:
+
+        bin1_data = []
+        bin2_data = []
+
+        # only look at bin1 information
+        for row in new_data:
+            if row[0] == 'x1':
+                bin1_data.append(row[0])
+            else:
+                bin2_data.append(row[0])
+
+        # calculate information gain of first bin
+        minimum = min(bin1_data[0])
+        maximum = max(bin1_data[0])
+        avg = (minimum + maximum) / 2
+        class_e = class_entropy(columns[num_cols - 1], len(bin1_data[0]), 2)
+        new_data, attribute_e1 = attribute_entropy(bin1_data[2], avg, 0, len(bin1_data[0]), data, 'n')
+        info_gain1 = information_gain(class_e, attribute_e1)
+
+        # calculate information gain of second bin
+        minimum = min(bin2_data[0])
+        maximum = max(bin2_data[0])
+        avg = (minimum + maximum) / 2
+        class_e = class_entropy(columns[num_cols - 1], len(bin2_data[0]), 2)
+        new_data, attribute_e2 = attribute_entropy(bin2_data[2], avg, 0, len(bin2_data[0]), data, 'n')
+        info_gain2 = information_gain(class_e, attribute_e2)
+
+# COLUMN B #
+else:
+    root = 'B'
+
+# branch off root node by using bi
 
 # based off root node, find next set of nodes (USING TWO BINS)
 
