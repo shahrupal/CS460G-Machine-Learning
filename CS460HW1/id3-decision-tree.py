@@ -103,7 +103,7 @@ def class_entropy(columns):
 
 
 # calculate entropy of each attribute column (columns A and B)
-def attribute_entropy(rows, columns, column_num):
+def attribute_entropy(rows, column_num):
 
     final = 0
 
@@ -149,7 +149,12 @@ def attribute_entropy(rows, columns, column_num):
         entropy = probability * entropy
         final += entropy
 
-    print(final)
+    return final
+
+
+# calculate information gain of given attribute
+def information_gain(class_e, attribute_e):
+    return class_e - attribute_e
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
@@ -173,7 +178,10 @@ for i in range(num_cols):
         attribute.append(row[i])
     columns.append(attribute)
 
+# TESTING #
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
-class_entropy(categorical_columns)
-attribute_entropy(categorical_rows, categorical_columns, 0)
+class_e = class_entropy(categorical_columns)
+attribute_e = attribute_entropy(categorical_rows, 1)
+info_gain = information_gain(class_e, attribute_e)
+
 
