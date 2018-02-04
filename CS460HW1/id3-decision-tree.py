@@ -42,8 +42,37 @@ def convert_to_categorical_data(rows, columns, file_name):
 
     boundaries = find_boundary(file_name)
 
-    for i in rows:
-        print(i)
+    # CONVERT ROW DATA
+    for row in rows:
+
+        # create categorical data for column A
+        if float(row[0]) <= boundaries[0]:
+            row[0] = 'x1'
+        else:
+            row[0] = 'x2'
+
+        # create categorical data for column B
+        if float(row[1]) <= boundaries[1]:
+            row[1] = 'y1'
+        else:
+            row[1] = 'y2'
+
+    # CONVERT COLUMN DATA
+    # create categorical data for column A
+    for j in range(len(columns[0])):
+        if float(columns[0][j]) <= boundaries[0]:
+            columns[0][j] = 'x1'
+        else:
+            columns[0][j] = 'x2'
+
+    # create categorical data for column B
+    for k in range(len(columns[1])):
+        if float(columns[1][k]) <= boundaries[1]:
+            columns[1][k] = 'y1'
+        else:
+            columns[1][k] = 'y2'
+
+    return rows, columns
 
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
@@ -67,5 +96,5 @@ for i in range(num_cols):
         attribute.append(row[i])
     columns.append(attribute)
 
-convert_to_categorical_data(rows, columns, file_name)
+categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
 
