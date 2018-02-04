@@ -153,8 +153,28 @@ def attribute_entropy(rows, column_num):
 
 
 # calculate information gain of given attribute
-def information_gain(class_e, attribute_e):
+def information_gain(rows, columns, column_num):
+    class_e = class_entropy(columns)
+    attribute_e = attribute_entropy(rows, column_num)
     return class_e - attribute_e
+
+
+# create id3 algorithm to make a decision tree
+def id3_algorithm(rows, columns):
+
+    # will store information gain of column 0 in index 0, and so on
+    info_gain = []
+
+    # find information gain of each column (A, B)
+    for i in range(2):
+        gain = information_gain(rows, columns, i)
+        info_gain.append(gain)
+
+    # find number of column with largest information gain
+    if info_gain[0] > info_gain[1]: new_attribute = 0
+    else: new_attribute = 1
+
+    print(new_attribute)
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
@@ -180,8 +200,6 @@ for i in range(num_cols):
 
 # TESTING #
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
-class_e = class_entropy(categorical_columns)
-attribute_e = attribute_entropy(categorical_rows, 1)
-info_gain = information_gain(class_e, attribute_e)
+id3_algorithm(categorical_rows, categorical_columns)
 
 
