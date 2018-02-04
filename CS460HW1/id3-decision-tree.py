@@ -1,6 +1,8 @@
 import csv
+import math
 
 # ---------------------------------------------------- Functions ---------------------------------------------------- #
+
 
 # input --> synthetic csv file
 # outputs an array --> index 0 = boundary for A column; index 1 = boundary for B column
@@ -75,6 +77,33 @@ def convert_to_categorical_data(rows, columns, file_name):
     return rows, columns
 
 
+# calculate entropy of class column (column C)
+def class_entropy(columns):
+
+    count0 = 0
+    count1 = 0
+    counts = []
+    total = 0
+    entropy = 0
+
+    # count number of 0's and 1's in class column
+    for i in range(len(columns[2])):
+        total += 1
+        if float(columns[2][i]) == 0:
+            count0 += 1
+        else:
+            count1 += 1
+    counts.append(count0)
+    counts.append(count1)
+
+    for n in range(len(counts)):
+        entropy -= (counts[n] / total) * (math.log(counts[n] / total) / math.log(2))
+
+    return entropy
+
+
+# calculate entropies of each attribute column (columns A and B)
+
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
 # read in .csv file
@@ -97,4 +126,5 @@ for i in range(num_cols):
     columns.append(attribute)
 
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
+class_entropy(categorical_columns)
 
