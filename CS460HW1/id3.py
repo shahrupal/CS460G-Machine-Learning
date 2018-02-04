@@ -40,31 +40,34 @@ def class_entropy(col, num_rows, bins):
 
 
 # calculate entropy of attribute
-def attribute_entropy(col, boundary, col_num, num_rows, dataset, string_name):
+def attribute_entropy(col, boundary, col_num, num_rows, dataset, string_name, iteration):
 
     # convert list of strings to list of floats
-    col = list(map(float, col))
+    print("COL:")
+    print(col)
+    # col = list(map(float, col))
 
     # create list of data in bins
     bin1 = []
     bin2 = []
 
-    # split data into bins (discretize via equidistant bins)
-    for row in dataset:
+    if iteration == 0:
+        # split data into bins (discretize via equidistant bins)
+        for row in dataset:
 
-        # print(row[col_num])
-        data_entry = float(row[col_num])
+            # print(row[col_num])
+            data_entry = float(row[col_num])
 
-        # replace floats with strings for easier search
-        # add data to bins
-        if data_entry <= boundary:
-            #bin1.append(data_entry)
-            bin1.append(row)
-            row[col_num] = string_name + '1'
-        else:
-            #bin2.append(data_entry)
-            bin2.append(row)
-            row[col_num] = string_name + '2'
+            # replace floats with strings for easier search
+            # add data to bins
+            if data_entry <= boundary:
+                #bin1.append(data_entry)
+                bin1.append(row)
+                row[col_num] = string_name + '1'
+            else:
+                #bin2.append(data_entry)
+                bin2.append(row)
+                row[col_num] = string_name + '2'
 
     # bins = [[b1no, b1yes], [b2no, b2yes]]
     bins = [[0, 0], [0, 0]]
@@ -118,6 +121,7 @@ def information_gain(class_entropy, attribute_entropy):
 # target --> target values {column c}
 # attributes --> all attributes not used currently {a, b}
 # boundary_ values --> list of boundary used on column1 and column2
+it = 0
 def id3_algorithm(examples, target, attributes, boundary, all_data):
 
     print(examples)
@@ -132,35 +136,39 @@ def id3_algorithm(examples, target, attributes, boundary, all_data):
     # calculate entropy and information gain of each column/bin
     for i in range(2):
 
-        temp_bin = []
-
         if i == 0: bin_string = 'x'
         else: bin_string = 'y'
 
-        new_data, entropy, b1, b2 = attribute_entropy(examples[i], boundary[i], i, len(examples[0]), all_data, bin_string)
+        global it
+        new_data, entropy, b1, b2 = attribute_entropy(examples[i], boundary[i], i, len(examples[0]), all_data, bin_string, it)
         gain = information_gain(class_e, entropy)
 
         attribute_e.append(entropy)
         info_gain.append(gain)
 
-        #temp_bin.append(b1)
-        #temp_bin.append(b2)
-        #bins.append(temp_bin)
+        temp_bins = []
 
-        bins.append(b1)
-        bins.append(b2)
+        temp_bins.append(b1)
+        temp_bins.append(b2)
+        bins.append(temp_bins)
 
     print(attribute_e)
     print(info_gain)
+
     print(bins[0])
     print(bins[1])
 
-    # find which attribute to use based on highest information gain
-    attribute_to_split = attribute_e.index(max(attribute_e))
 
-    # split into bins
-    #for i in range(len(bins[attribute_to_split])):
-        #id3_algorithm(bins[attribute_to_split], 1, 1, boundary, all_data)
+
+    # find which attribute to use based on highest information gain
+    attribute_to_split = info_gain.index(max(info_gain))
+
+    # # split into bins
+    for i in range(len(bins[attribute_to_split])):
+        print("here")
+        print(bins[attribute_to_split][i])
+        it = 1
+        id3_algorithm(bins[attribute_to_split][i], 1, 1, boundary, all_data)
 
 
 # ~~~~~~~~~~ MAIN ~~~~~~~~~~ #
