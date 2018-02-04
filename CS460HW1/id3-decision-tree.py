@@ -102,9 +102,57 @@ def class_entropy(columns):
     return entropy
 
 
-# calculate entropies of each attribute column (columns A and B)
+# calculate entropy of each attribute column (columns A and B)
+def attribute_entropy(rows, columns, column_num):
+
+    final = 0
+
+    if column_num == 0:
+        bin_name = 'x'
+    elif column_num == 1:
+        bin_name = 'y'
+
+    # bins = [[b1no, b1yes], [b2no, b2yes]]
+    bins = [[0, 0], [0, 0]]
+
+    # store class count for each bin
+    for row in rows:
+
+        if row[column_num] == bin_name + '1':
+            if row[2] == '0':
+                bins[0][0] += 1
+            else:
+                bins[0][1] += 1
+        else:
+            if row[2] == '0':
+                bins[1][0] += 1
+            else:
+                bins[1][1] += 1
+
+    print(bins)
+
+    # calculate entropy
+    for i in range(2):
+
+        entropy = 0
+        total = 0
+
+        for j in range(2):
+            total += bins[i][j]
+
+        probability = total / len(rows)
+
+        for k in range(2):
+            if bins[i][k] != 0:
+                entropy += -1 * (bins[i][k] / total) * ((math.log(bins[i][k] / total)) / math.log(2))
+
+        entropy = probability * entropy
+        final += entropy
+
+    print(final)
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
+
 
 # read in .csv file
 file_name = 'synthetic-1.csv'
@@ -127,4 +175,5 @@ for i in range(num_cols):
 
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
 class_entropy(categorical_columns)
+attribute_entropy(categorical_rows, categorical_columns, 0)
 
