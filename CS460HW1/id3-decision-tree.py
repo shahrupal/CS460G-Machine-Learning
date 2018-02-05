@@ -159,6 +159,64 @@ def information_gain(rows, columns, column_num):
     return class_e - attribute_e
 
 
+# split attribute into 2 bins
+# return [[[bin1 rows], [bin1 columns]], [[bin2 rows], [bin2 columns]]]
+def split_into_bins(rows, columns, column_num):
+
+    bin1_rows = []
+    bin2_rows = []
+
+    bin1_col0 = []
+    bin1_col1 = []
+    bin1_col2 = []
+    bin2_col0 = []
+    bin2_col1 = []
+    bin2_col2 = []
+    bin1_columns = []
+    bin2_columns = []
+
+    if column_num == 0:
+        bin_name = 'x'
+    elif column_num == 1:
+        bin_name = 'y'
+
+    # split rows into bins based on categorical data of given column
+    # split columns into bins based on categorical data of given column
+    for row in rows:
+
+        if row[column_num] == bin_name + '1':
+            bin1_rows.append(row)
+            bin1_col0.append(row[0])
+            bin1_col1.append(row[1])
+            bin1_col2.append(row[2])
+        else:
+            bin2_rows.append(row)
+            bin2_col0.append(row[0])
+            bin2_col1.append(row[1])
+            bin2_col2.append(row[2])
+
+    bin1_columns.append(bin1_col0)
+    bin1_columns.append(bin1_col1)
+    bin1_columns.append(bin1_col2)
+
+    bin2_columns.append(bin2_col0)
+    bin2_columns.append(bin2_col1)
+    bin2_columns.append(bin2_col2)
+
+    bin1 = []
+    bin2 = []
+    bins = []
+
+    bin1.append(bin1_rows)
+    bin1.append(bin1_columns)
+    bin2.append(bin2_rows)
+    bin2.append(bin2_columns)
+    bins.append(bin1)
+    bins.append(bins)
+
+    return bins
+
+
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns):
 
@@ -175,6 +233,8 @@ def id3_algorithm(rows, columns):
     else: new_attribute = 1
 
     print(new_attribute)
+
+    split_into_bins(rows, columns, new_attribute)
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
