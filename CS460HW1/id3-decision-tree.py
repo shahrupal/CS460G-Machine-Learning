@@ -274,8 +274,7 @@ def id3_algorithm(rows, columns):
         print('DEPTH')
         print(depth)
         id3_algorithm(bins[i][0], bins[i][1])
-        depth = 1
-
+        depth = 2
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
 
