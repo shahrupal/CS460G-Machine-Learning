@@ -215,14 +215,40 @@ def split_into_bins(rows, columns, column_num):
     bins.append(bin1)
     bins.append(bins)
 
+    print('BINS')
+    print(bin1)
+    print(bin2)
+
     return bins
 
+# return class with highest probability (to be used when no attributes left)
+def highest_probability(columns):
 
-attributes = [0, 1]
+    count0 = 0
+    count1 = 0
+
+    for i in range(len(columns[2])):
+        if columns[2][i] == '0':
+            count0 += 1
+        else:
+            count1 += 1
+
+    if count0 > count1: return 0
+    else: return 1
+
+
+depth = 0
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns):
 
-    # if len(attributes) == 0: print("jgjhgjhg")
+    global depth
+    depth += 1
+
+    # if no more attributes, output target value of highest probability
+    if depth == 4:
+        print('TARGET')
+        print(highest_probability(columns))
+        return highest_probability(columns)
 
     # will store information gain of column 0 in index 0, and so on
     info_gain = []
@@ -236,28 +262,27 @@ def id3_algorithm(rows, columns):
     if info_gain[0] > info_gain[1]: new_attribute = 0
     else: new_attribute = 1
 
-
-    # # delete attribute from list after being used
-    # global attributes
-    # del attributes[0]
-
+    print('attribute: ',new_attribute)
     bins = split_into_bins(rows, columns, new_attribute)
 
     for r in rows:
         print(r)
 
+    input('stop\n')
+
     # call function recursively for each bin
     for i in range(2):
-        input('stop')
+        print('DEPTH')
+        print(depth)
         id3_algorithm(bins[i][0], bins[i][1])
-        attributes = [0, 1]
+        depth = 0
 
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
 
 # read in .csv file
-file_name = 'synthetic-1.csv'
+file_name = 'synthetic-2.csv'
 file = open(file_name)
 
 # store each row of data in 'rows' list (each row is stored in an index of 'rows')
