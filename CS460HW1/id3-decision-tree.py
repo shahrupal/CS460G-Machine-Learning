@@ -218,8 +218,11 @@ def split_into_bins(rows, columns, column_num):
     return bins
 
 
+attributes = [0, 1]
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns):
+
+    # if len(attributes) == 0: print("jgjhgjhg")
 
     # will store information gain of column 0 in index 0, and so on
     info_gain = []
@@ -233,13 +236,22 @@ def id3_algorithm(rows, columns):
     if info_gain[0] > info_gain[1]: new_attribute = 0
     else: new_attribute = 1
 
-    print(new_attribute)
+
+    # # delete attribute from list after being used
+    # global attributes
+    # del attributes[0]
 
     bins = split_into_bins(rows, columns, new_attribute)
 
+    for r in rows:
+        print(r)
+
     # call function recursively for each bin
     for i in range(2):
+        input('stop')
         id3_algorithm(bins[i][0], bins[i][1])
+        attributes = [0, 1]
+
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
