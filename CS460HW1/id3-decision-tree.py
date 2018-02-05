@@ -235,16 +235,21 @@ def highest_probability(columns):
 
 depth = 0
 # create id3 algorithm to make a decision tree
-def id3_algorithm(rows, columns):
+def id3_algorithm(rows, columns, attributes_count):
 
     for r in rows:
         print(r)
 
-    global depth
-    depth += 1
+    #global depth
+    #depth += 1
 
     # if no more attributes, output target value of highest probability
-    if depth >= 3:
+    # if depth >= 3:
+    #     print('TARGET')
+    #     print(highest_probability(columns))
+    #     return highest_probability(columns)
+
+    if attributes_count == 0:
         print('TARGET')
         print(highest_probability(columns))
         return highest_probability(columns)
@@ -273,8 +278,7 @@ def id3_algorithm(rows, columns):
     for i in range(2):
         print('DEPTH')
         print(depth)
-        id3_algorithm(bins[i][0], bins[i][1])
-        depth = 2
+        id3_algorithm(bins[i][0], bins[i][1], attributes_count-1)
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
 
@@ -299,6 +303,6 @@ for i in range(num_cols):
 
 # TESTING #
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
-id3_algorithm(categorical_rows, categorical_columns)
+id3_algorithm(categorical_rows, categorical_columns, 2)
 
 
