@@ -97,7 +97,8 @@ def class_entropy(columns):
     counts.append(count1)
 
     for n in range(len(counts)):
-        entropy -= (counts[n] / total) * (math.log(counts[n] / total) / math.log(2))
+        if counts[n] != 0:
+            entropy -= (counts[n] / total) * (math.log(counts[n] / total) / math.log(2))
 
     return entropy
 
@@ -234,7 +235,11 @@ def id3_algorithm(rows, columns):
 
     print(new_attribute)
 
-    split_into_bins(rows, columns, new_attribute)
+    bins = split_into_bins(rows, columns, new_attribute)
+
+    # call function recursively for each bin
+    for i in range(2):
+        id3_algorithm(bins[i][0], bins[i][1])
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
