@@ -283,7 +283,7 @@ def id3_algorithm(rows, columns, attributes_count):
 
 
 # read in .csv file
-file_name = 'synthetic-2.csv'
+file_name = 'synthetic-1.csv'
 file = open(file_name)
 
 # store each row of data in 'rows' list (each row is stored in an index of 'rows')
