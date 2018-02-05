@@ -213,11 +213,7 @@ def split_into_bins(rows, columns, column_num):
     bin2.append(bin2_rows)
     bin2.append(bin2_columns)
     bins.append(bin1)
-    bins.append(bins)
-
-    print('BINS')
-    print(bin1)
-    print(bin2)
+    bins.append(bin2)
 
     return bins
 
@@ -241,11 +237,14 @@ depth = 0
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns):
 
+    for r in rows:
+        print(r)
+
     global depth
     depth += 1
 
     # if no more attributes, output target value of highest probability
-    if depth > 3:
+    if depth >= 3:
         print('TARGET')
         print(highest_probability(columns))
         return highest_probability(columns)
@@ -262,21 +261,19 @@ def id3_algorithm(rows, columns):
     if info_gain[0] > info_gain[1]: new_attribute = 0
     else: new_attribute = 1
 
-    print('attribute: ',new_attribute)
+    print('attribute: ', new_attribute)
     bins = split_into_bins(rows, columns, new_attribute)
 
-    for r in rows:
-        print(r)
+    print(bins[0])
+    print(bins[1])
 
-    input('stop\n')
+    input('stop')
 
     # call function recursively for each bin
     for i in range(2):
         print('DEPTH')
         print(depth)
         id3_algorithm(bins[i][0], bins[i][1])
-        return
-        depth = 1
 
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
