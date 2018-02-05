@@ -245,7 +245,7 @@ def id3_algorithm(rows, columns):
     depth += 1
 
     # if no more attributes, output target value of highest probability
-    if depth == 4:
+    if depth > 3:
         print('TARGET')
         print(highest_probability(columns))
         return highest_probability(columns)
@@ -275,7 +275,8 @@ def id3_algorithm(rows, columns):
         print('DEPTH')
         print(depth)
         id3_algorithm(bins[i][0], bins[i][1])
-        depth = 0
+        return
+        depth = 1
 
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
