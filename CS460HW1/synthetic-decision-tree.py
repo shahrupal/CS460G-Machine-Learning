@@ -298,26 +298,33 @@ def graph(rows, cols):
 
     x = []
     y = []
-    # coord = []
-    #
+
+    # store x and y coordinates
     for r in rows:
         print(r)
         x.append(float(r[0]))
         y.append(float(r[1]))
 
-
+    # find axes limits
     x_min = min(x)
     x_max = max(x)
     y_min = min(y)
     y_max = max(y)
 
-    print(x_max)
-
+    # create graph
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    ax.scatter(x, y)
+    # graph scatter plot
+    # ax.scatter(x, y)
 
+    for i in range(len(rows)):
+         if rows[i][2] == '0':
+             ax.scatter(x[i], y[i], color="#4286F4")
+         else:
+             ax.scatter(x[i], y[i], color="#F75538")
+
+    # set axes limits
     ax.set_ylim(int(round(y_min)) - 1, int(round(y_max)) + 1)
     ax.set_xlim(int(round(x_min)) - 1, int(round(x_max)) + 1)
 
