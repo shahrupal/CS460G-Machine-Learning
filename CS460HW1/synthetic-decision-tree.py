@@ -301,7 +301,6 @@ def graph(rows, cols):
 
     # store x and y coordinates
     for r in rows:
-        print(r)
         x.append(float(r[0]))
         y.append(float(r[1]))
 
@@ -315,9 +314,7 @@ def graph(rows, cols):
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    # graph scatter plot
-    # ax.scatter(x, y)
-
+    # graph scatter plot and color based on actual class label
     for i in range(len(rows)):
          if rows[i][2] == '0':
              ax.scatter(x[i], y[i], color="#4286F4")
