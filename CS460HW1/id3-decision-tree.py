@@ -1,6 +1,6 @@
 import csv
 import math
-
+import matplotlib
 # ---------------------------------------------------- Functions ---------------------------------------------------- #
 
 
@@ -159,7 +159,6 @@ def information_gain(rows, columns, column_num):
     attribute_e = attribute_entropy(rows, column_num)
     return class_e - attribute_e
 
-
 # split attribute into 2 bins
 # return [[[bin1 rows], [bin1 columns]], [[bin2 rows], [bin2 columns]]]
 def split_into_bins(rows, columns, column_num):
@@ -234,24 +233,24 @@ def highest_probability(columns):
 
 
 depth = 0
+tree = []
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns, attributes_count):
 
-    for r in rows:
-        print(r)
-
-    #global depth
-    #depth += 1
-
-    # if no more attributes, output target value of highest probability
-    # if depth >= 3:
-    #     print('TARGET')
-    #     print(highest_probability(columns))
-    #     return highest_probability(columns)
+    print('rows')
 
     if attributes_count == 0:
+
+        global tree
+        tree.append(rows[0][0])  # stores first tree node
+        tree.append(rows[0][1])  # stores second tree node
+        tree.append(highest_probability(columns))  # stores target leaf
+
+        print(rows[0][0])  # stores first node
+        print(rows[0][1])  # stores second node
         print('TARGET')
-        print(highest_probability(columns))
+        print(highest_probability(columns))  # stores target leaf
+
         return highest_probability(columns)
 
     # will store information gain of column 0 in index 0, and so on
@@ -279,6 +278,7 @@ def id3_algorithm(rows, columns, attributes_count):
         print('DEPTH')
         print(depth)
         id3_algorithm(bins[i][0], bins[i][1], attributes_count-1)
+
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
 
