@@ -158,6 +158,7 @@ def information_gain(rows, columns, column_num):
     attribute_e = attribute_entropy(rows, column_num)
     return class_e - attribute_e
 
+
 # split attribute into 2 bins
 # return [[[bin1 rows], [bin1 columns]], [[bin2 rows], [bin2 columns]]]
 def split_into_bins(rows, columns, column_num):
@@ -236,10 +237,10 @@ tree = []
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns, attributes_count):
 
-    for r in rows:
-        print(r)
-
-    print('-------------------')
+    # for r in rows:
+    #     print(r)
+    #
+    # print('-------------------')
 
     if attributes_count == 0:
 
@@ -274,6 +275,29 @@ def id3_algorithm(rows, columns, attributes_count):
 
         id3_algorithm(bins[i][0], bins[i][1], attributes_count-1)
 
+
+# given input for attribute A and B, output predicted target value
+def prediction(inputA, inputB):
+    # traverse tree to find target associated with input values from user
+    b = find_boundary(file_name)
+
+    if float(inputA) <= b[0]:
+        attributeA = 'x1'
+    elif float(inputA) > b[0]:
+        attributeA = 'x2'
+
+    if float(inputB) <= b[1]:
+        attributeB = 'y1'
+    elif float(inputB) > b[1]:
+        attributeB = 'y2'
+
+    for j in range(len(tree)):
+        if attributeA == tree[j][0]:
+            if attributeB == tree[j][1]:
+                print('Predicted target: ', tree[j][2], '\n')
+
+    return tree[j][2]
+
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
 
@@ -296,37 +320,44 @@ for i in range(num_cols):
         attribute.append(row[i])
     columns.append(attribute)
 
-# TESTING #
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
 id3_algorithm(categorical_rows, categorical_columns, 2)
 
+# ------------------------------------ INPUT ------------------------------------ #
 choice = input('Enter (M) to enter a .csv file of testing data or (S) to enter a single piece of data: ')
 
 if choice == 'S' or choice == 's':
 
     # ask user for input for attributes
-    inputA = input('Input a value for attribute A: ')
-    inputB = input('Input a value for attribute B: ')
+    inputA = input('Value for Attribute A: ')
+    inputB = input('Value for Attribute B: ')
 
-    # traverse tree to find target associated with input values from user
-    b = find_boundary(file_name)
-
-    if float(inputA) <= b[0]: attributeA = 'x1'
-    elif float(inputA) > b[0]: attributeA = 'x2'
-
-    if float(inputB) <= b[1]: attributeB = 'y1'
-    elif float(inputB) > b[1]: attributeB = 'y2'
-
-    for j in range(len(tree)):
-        if attributeA == tree[j][0]:
-            if attributeB == tree[j][1]:
-                print('Predicted target: ', tree[j][2])
+    # output prediction
+    prediction(inputA, inputB)
 
 elif choice == 'M' or choice == 'm':
 
     file_choice = input('Please enter .csv file name of testing data: ')
 
+    # read in .csv file
+    try:
+        f = open(file_choice)
+        valid_file = True
+    except FileNotFoundError:
+        print('File not found. Please try again!')
+        valid_file = False
 
+    if valid_file:
+
+        # store each row of data in 'data' list (each row is stored in an index of 'data')
+        read = csv.reader(f, delimiter=',')
+        data = list(read)
+
+        # output prediction for each row of given data
+        for r in data:
+            print('Value for Attribute A:', r[0])
+            print('Value for Attribute B:', r[1])
+            prediction(r[0], r[1])
 
 else:
     print('Invalid option. Please try again!')
