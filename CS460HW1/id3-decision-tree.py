@@ -130,8 +130,6 @@ def attribute_entropy(rows, column_num):
             else:
                 bins[1][1] += 1
 
-    print(bins)
-
     # calculate entropy
     for i in range(2):
 
@@ -237,19 +235,12 @@ tree = []
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns, attributes_count):
 
-    print('rows')
-
     if attributes_count == 0:
 
         global tree
         tree.append(rows[0][0])  # stores first tree node
         tree.append(rows[0][1])  # stores second tree node
         tree.append(highest_probability(columns))  # stores target leaf
-
-        print(rows[0][0])  # stores first node
-        print(rows[0][1])  # stores second node
-        print('TARGET')
-        print(highest_probability(columns))  # stores target leaf
 
         return highest_probability(columns)
 
@@ -265,18 +256,11 @@ def id3_algorithm(rows, columns, attributes_count):
     if info_gain[0] > info_gain[1]: new_attribute = 0
     else: new_attribute = 1
 
-    print('attribute: ', new_attribute)
     bins = split_into_bins(rows, columns, new_attribute)
-
-    print(bins[0])
-    print(bins[1])
-
-    input('stop')
 
     # call function recursively for each bin
     for i in range(2):
-        print('DEPTH')
-        print(depth)
+
         id3_algorithm(bins[i][0], bins[i][1], attributes_count-1)
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
@@ -301,8 +285,19 @@ for i in range(num_cols):
         attribute.append(row[i])
     columns.append(attribute)
 
+# ask user for input for attributes
+inputA = input('Input a value for attribute A: ')
+inputB = input('Input a value for attribute B: ')
+
 # TESTING #
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
 id3_algorithm(categorical_rows, categorical_columns, 2)
+
+# traverse tree to find target associated with input values from user
+# global tree
+for j in range(len(tree)):
+    print(tree[j])
+
+
 
 
