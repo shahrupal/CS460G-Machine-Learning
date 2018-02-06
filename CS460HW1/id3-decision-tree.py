@@ -237,10 +237,15 @@ def id3_algorithm(rows, columns, attributes_count):
 
     if attributes_count == 0:
 
+        # store branch in tree
         global tree
-        tree.append(rows[0][0])  # stores first tree node
-        tree.append(rows[0][1])  # stores second tree node
-        tree.append(highest_probability(columns))  # stores target leaf
+        temp = []
+
+        temp.append(rows[0][0])  # stores first tree node
+        temp.append(rows[0][1])  # stores second tree node
+        temp.append(highest_probability(columns))  # stores target leaf
+
+        tree.append(temp)
 
         return highest_probability(columns)
 
@@ -294,9 +299,21 @@ categorical_rows, categorical_columns = convert_to_categorical_data(rows, column
 id3_algorithm(categorical_rows, categorical_columns, 2)
 
 # traverse tree to find target associated with input values from user
-# global tree
+b = find_boundary(file_name)
+
+if float(inputA) <= b[0]: attributeA = 'x1'
+elif float(inputA) > b[0]: attributeA = 'x2'
+
+if float(inputB) <= b[1]: attributeB = 'y1'
+elif float(inputB) > b[1]: attributeB = 'y2'
+
 for j in range(len(tree)):
-    print(tree[j])
+    if attributeA == tree[j][0]:
+        if attributeB == tree[j][1]:
+            print('Predicted target: ', tree[j][2])
+
+
+
 
 
 
