@@ -1,6 +1,7 @@
 import csv
 import math
 import matplotlib.pyplot as plt
+import matplotlib.patches as patch
 import numpy as np
 # ---------------------------------------------------- Functions ---------------------------------------------------- #
 
@@ -330,6 +331,10 @@ def graph(rows, cols, name):
     plt.xlabel('Attribute A')
     plt.ylabel('Attribute B')
 
+    # create legend
+    red_key = patch.Patch(color='#4286F4', label='Class 0')
+    blue_key = patch.Patch(color='#F75538', label='Class 1')
+    plt.legend(handles=[red_key, blue_key])
     plt.show()
 
 
