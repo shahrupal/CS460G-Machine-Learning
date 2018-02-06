@@ -1,7 +1,7 @@
 import csv
 import math
-import matplotlib
-
+import matplotlib.pyplot as plt
+import numpy as np
 # ---------------------------------------------------- Functions ---------------------------------------------------- #
 
 
@@ -216,6 +216,7 @@ def split_into_bins(rows, columns, column_num):
 
     return bins
 
+
 # return class with highest probability (to be used when no attributes left)
 def highest_probability(columns):
 
@@ -236,11 +237,6 @@ depth = 0
 tree = []
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns, attributes_count):
-
-    # for r in rows:
-    #     print(r)
-    #
-    # print('-------------------')
 
     if attributes_count == 0:
 
@@ -298,11 +294,41 @@ def prediction(inputA, inputB):
                 return tree[j][2]
 
 
+def graph(rows, cols):
+
+    x = []
+    y = []
+    # coord = []
+    #
+    for r in rows:
+        print(r)
+        x.append(float(r[0]))
+        y.append(float(r[1]))
+
+
+    x_min = min(x)
+    x_max = max(x)
+    y_min = min(y)
+    y_max = max(y)
+
+    print(x_max)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    ax.scatter(x, y)
+
+    ax.set_ylim(int(round(y_min)) - 1, int(round(y_max)) + 1)
+    ax.set_xlim(int(round(x_min)) - 1, int(round(x_max)) + 1)
+
+    plt.show()
+
+
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
 
 # read in .csv file
-file_name = 'synthetic-2.csv'
+file_name = 'synthetic-1.csv'
 file = open(file_name)
 
 # store each row of data in 'rows' list (each row is stored in an index of 'rows')
@@ -319,6 +345,8 @@ for i in range(num_cols):
     for row in rows:
         attribute.append(row[i])
     columns.append(attribute)
+
+graph(rows, columns)
 
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
 id3_algorithm(categorical_rows, categorical_columns, 2)
@@ -367,6 +395,7 @@ elif choice == 'M' or choice == 'm':
             predicted_target = prediction(r[0], r[1])
             print('Correct Target Value:',columns[2][iterator],'\n')
 
+            # check if prediction target matches actual target
             if float(predicted_target) == float(columns[2][iterator]):
                 error += 1
 
@@ -376,11 +405,8 @@ elif choice == 'M' or choice == 'm':
         error = ((total - error) / error) * 100
         print('Error of Predictions:',round(error,2),'%')
 
-
 else:
     print('Invalid option. Please try again!')
 
-# FORMAT
-# file to test:
-# predicted target:
-# actual target:
+
+# ----------------------------------- GRAPH ----------------------------------- #
