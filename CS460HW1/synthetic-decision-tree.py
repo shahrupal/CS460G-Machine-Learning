@@ -294,7 +294,7 @@ def prediction(inputA, inputB):
                 return tree[j][2]
 
 
-def graph(rows, cols):
+def graph(rows, cols, name):
 
     x = []
     y = []
@@ -325,6 +325,11 @@ def graph(rows, cols):
     ax.set_ylim(int(round(y_min)) - 1, int(round(y_max)) + 1)
     ax.set_xlim(int(round(x_min)) - 1, int(round(x_max)) + 1)
 
+    # set title and axes labels
+    fig.suptitle(name, fontsize=20)
+    plt.xlabel('Attribute A')
+    plt.ylabel('Attribute B')
+
     plt.show()
 
 
@@ -350,7 +355,7 @@ for i in range(num_cols):
         attribute.append(row[i])
     columns.append(attribute)
 
-graph(rows, columns)
+graph(rows, columns, file_name)
 
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
 id3_algorithm(categorical_rows, categorical_columns, 2)
