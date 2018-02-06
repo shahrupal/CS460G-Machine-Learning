@@ -1,75 +1,126 @@
 import csv
 import math
+import matplotlib
 
-# ~~~~~~~~ FUNCTIONS ~~~~~~~~~ #
-
-
-def class_counter(col):
-
-    count = []
-
-    # prints each class
-    classes = list(set(col))
-
-    # prints number of times each class occurs
-    for x in classes:
-        counter = 0
-        for y in col:
-            if x == y:
-                counter = counter + 1
-        count.append(counter)
-
-    # returns list of number of class occurrences
-    return count
+# ---------------------------------------------------- Functions ---------------------------------------------------- #
 
 
-# given column of data and number of bins
-# discretize data and calculate entropy
-# return entropy value
-def class_entropy(col, num_rows, bins):
+# input --> synthetic csv file
+# outputs an array --> index 0 = boundary for A column; index 1 = boundary for B column
+def find_boundary(file_name):
 
+    boundary1 = 0
+    boundary2 = 0
+    boundaries = []
+
+    if file_name == 'synthetic-1.csv':
+        boundary1 = 4.6121
+        boundary2 = 2.91305
+        boundaries.append(boundary1)
+        boundaries.append(boundary2)
+    elif file_name == 'synthetic-2.csv':
+        boundary1 = 0.0878
+        boundary2 = 2.61845
+        boundaries.append(boundary1)
+        boundaries.append(boundary2)
+    elif file_name == 'synthetic-3.csv':
+        boundary1 = 1.96091
+        boundary2 = 0.6424
+        boundaries.append(boundary1)
+        boundaries.append(boundary2)
+    elif file_name == 'synthetic-4.csv':
+        boundary1 = 4.05485
+        boundary2 = 0.6385
+        boundaries.append(boundary1)
+        boundaries.append(boundary2)
+
+    return boundaries
+
+
+# take original data and convert decimals to categorical data
+# first column --> if below boundary, convert to x1; if above boundary, convert to x2
+# second column --> below, y1; above, y2
+# output new 'rows' and 'columns' lists with decimals replaced with strings
+def convert_to_categorical_data(rows, columns, file_name):
+
+    boundaries = find_boundary(file_name)
+
+    # CONVERT ROW DATA
+    for row in rows:
+
+        # create categorical data for column A
+        if float(row[0]) <= boundaries[0]:
+            row[0] = 'x1'
+        else:
+            row[0] = 'x2'
+
+        # create categorical data for column B
+        if float(row[1]) <= boundaries[1]:
+            row[1] = 'y1'
+        else:
+            row[1] = 'y2'
+
+    # CONVERT COLUMN DATA
+    # create categorical data for column A
+    for j in range(len(columns[0])):
+        if float(columns[0][j]) <= boundaries[0]:
+            columns[0][j] = 'x1'
+        else:
+            columns[0][j] = 'x2'
+
+    # create categorical data for column B
+    for k in range(len(columns[1])):
+        if float(columns[1][k]) <= boundaries[1]:
+            columns[1][k] = 'y1'
+        else:
+            columns[1][k] = 'y2'
+
+    return rows, columns
+
+
+# calculate entropy of class column (column C)
+def class_entropy(columns):
+
+    count0 = 0
+    count1 = 0
+    counts = []
+    total = 0
     entropy = 0
 
-    # prints number of times each class occurs
-    count = class_counter(col)
+    # count number of 0's and 1's in class column
+    for i in range(len(columns[2])):
+        total += 1
+        if float(columns[2][i]) == 0:
+            count0 += 1
+        else:
+            count1 += 1
+    counts.append(count0)
+    counts.append(count1)
 
-    # calculate entropy
-    for n in (0, bins - 1):
-        entropy += -1 * (count[n] / num_rows) * ((math.log(count[n] / num_rows)) / math.log(2))
+    for n in range(len(counts)):
+        if counts[n] != 0:
+            entropy -= (counts[n] / total) * (math.log(counts[n] / total) / math.log(2))
+
     return entropy
 
 
-# calculate entropy of attribute
-def attribute_entropy(col, boundary, col_num, num_rows, dataset, string_name):
+# calculate entropy of each attribute column (columns A and B)
+def attribute_entropy(rows, column_num):
 
-    # convert list of strings to list of floats
-    col = list(map(float, col))
+    final = 0
 
-    # create list of data in bins
-    bin1 = []
-    bin2 = []
-
-    # split data into bins (discretize via equidistant bins)
-    for row in dataset:
-
-        data_entry = float(row[col_num])
-
-        # replace floats with strings for easier search
-        # add data to bins
-        if data_entry <= boundary:
-            bin1.append(data_entry)
-            row[col_num] = string_name + '1'
-        else:
-            bin2.append(data_entry)
-            row[col_num] = string_name + '2'
+    if column_num == 0:
+        bin_name = 'x'
+    elif column_num == 1:
+        bin_name = 'y'
 
     # bins = [[b1no, b1yes], [b2no, b2yes]]
     bins = [[0, 0], [0, 0]]
 
     # store class count for each bin
-    for row in dataset:
+    for row in rows:
 
-        if row[col_num] == string_name + '1':
+        if row[column_num] == bin_name + '1':
             if row[2] == '0':
                 bins[0][0] += 1
             else:
@@ -80,9 +131,6 @@ def attribute_entropy(col, boundary, col_num, num_rows, dataset, string_name):
             else:
                 bins[1][1] += 1
 
-    print(bins)
-    final = 0
-
     # calculate entropy
     for i in range(2):
 
@@ -92,7 +140,7 @@ def attribute_entropy(col, boundary, col_num, num_rows, dataset, string_name):
         for j in range(2):
             total += bins[i][j]
 
-        probability = total / num_rows
+        probability = total / len(rows)
 
         for k in range(2):
             if bins[i][k] != 0:
@@ -101,161 +149,189 @@ def attribute_entropy(col, boundary, col_num, num_rows, dataset, string_name):
         entropy = probability * entropy
         final += entropy
 
-    print(dataset)
-    return dataset, final
+    return final
 
 
-# calculate information gain
-def information_gain(class_entropy, attribute_entropy):
-    return class_entropy - attribute_entropy
+# calculate information gain of given attribute
+def information_gain(rows, columns, column_num):
+    class_e = class_entropy(columns)
+    attribute_e = attribute_entropy(rows, column_num)
+    return class_e - attribute_e
 
-# ID3 algorithm
-# make attributes an array of column names
-def id3(training, target, attributes, root, info_gain1, info_gain2, new_data):
+# split attribute into 2 bins
+# return [[[bin1 rows], [bin1 columns]], [[bin2 rows], [bin2 columns]]]
+def split_into_bins(rows, columns, column_num):
 
-    bin1_data = []
-    bin2_data = []
+    bin1_rows = []
+    bin2_rows = []
 
-    # create root node
-    if info_gain1 > info_gain2:
-        root = 'A'
-        for row in new_data:
-            if row[0] == 'x1':
-                bin1_data.append(row)
-            else:
-                bin2_data.append(row)
-    else:
-        root = 'B'
-        for row in new_data:
-            if row[0] == 'y1':
-                bin1_data.append(row)
-            else:
-                bin2_data.append(row)
+    bin1_col0 = []
+    bin1_col1 = []
+    bin1_col2 = []
+    bin2_col0 = []
+    bin2_col1 = []
+    bin2_col2 = []
+    bin1_columns = []
+    bin2_columns = []
 
-    # if all training data has same class label, return that label
-    class_count = class_counter(new_data[2])
-    if class_count[0] == len(new_data[2]):
-        return new_data[2][0]
+    if column_num == 0:
+        bin_name = 'x'
+    elif column_num == 1:
+        bin_name = 'y'
 
-    # if no more attributes, return label of highest probability
-    prob0 = 0
-    prob1 = 0
-    if len(attributes) == 0:
-        for row in new_data:
-            if row[2] == 0:
-                prob0 += 1
-            else:
-                prob1 += 1
-        if prob0 > prob1:
-            return 0
+    # split rows into bins based on categorical data of given column
+    # split columns into bins based on categorical data of given column
+    for row in rows:
+
+        if row[column_num] == bin_name + '1':
+            bin1_rows.append(row)
+            bin1_col0.append(row[0])
+            bin1_col1.append(row[1])
+            bin1_col2.append(row[2])
         else:
-            return 1
+            bin2_rows.append(row)
+            bin2_col0.append(row[0])
+            bin2_col1.append(row[1])
+            bin2_col2.append(row[2])
 
-    
+    bin1_columns.append(bin1_col0)
+    bin1_columns.append(bin1_col1)
+    bin1_columns.append(bin1_col2)
 
-# ~~~~~~~~~~ MAIN ~~~~~~~~~~ #
-columns = []
-attribute = []
+    bin2_columns.append(bin2_col0)
+    bin2_columns.append(bin2_col1)
+    bin2_columns.append(bin2_col2)
+
+    bin1 = []
+    bin2 = []
+    bins = []
+
+    bin1.append(bin1_rows)
+    bin1.append(bin1_columns)
+    bin2.append(bin2_rows)
+    bin2.append(bin2_columns)
+    bins.append(bin1)
+    bins.append(bin2)
+
+    return bins
+
+# return class with highest probability (to be used when no attributes left)
+def highest_probability(columns):
+
+    count0 = 0
+    count1 = 0
+
+    for i in range(len(columns[2])):
+        if columns[2][i] == '0':
+            count0 += 1
+        else:
+            count1 += 1
+
+    if count0 > count1: return 0
+    else: return 1
+
+
+depth = 0
+tree = []
+# create id3 algorithm to make a decision tree
+def id3_algorithm(rows, columns, attributes_count):
+
+    for r in rows:
+        print(r)
+
+    print('-------------------')
+
+    if attributes_count == 0:
+
+        # store branch in tree
+        global tree
+        temp = []
+
+        temp.append(rows[0][0])  # stores first tree node
+        temp.append(rows[0][1])  # stores second tree node
+        temp.append(highest_probability(columns))  # stores target leaf
+
+        tree.append(temp)
+
+        return highest_probability(columns)
+
+    # will store information gain of column 0 in index 0, and so on
+    info_gain = []
+
+    # find information gain of each column (A, B)
+    for i in range(2):
+        gain = information_gain(rows, columns, i)
+        info_gain.append(gain)
+
+    # find number of column with largest information gain
+    if info_gain[0] > info_gain[1]: new_attribute = 0
+    else: new_attribute = 1
+
+    bins = split_into_bins(rows, columns, new_attribute)
+
+    # call function recursively for each bin
+    for i in range(2):
+
+        id3_algorithm(bins[i][0], bins[i][1], attributes_count-1)
+
+# ---------------------------------------------------- Main ---------------------------------------------------- #
+
 
 # read in .csv file
-file_name = 'synthetic-1.csv'
+file_name = 'synthetic-2.csv'
 file = open(file_name)
 
+# store each row of data in 'rows' list (each row is stored in an index of 'rows')
 reader = csv.reader(file, delimiter=',')
-data = list(reader)
-print(data)
-num_rows = len(data)
-num_cols = 3  # figure out how to determine number of cols
+rows = list(reader)
 
-# store each column of data in 'columns' list (each column is stored in an index)
-for i in range(0, num_cols):
+num_rows = len(rows)
+num_cols = 3
+
+# store each column of data in 'columns' list (each column is stored in an index or 'columns')
+columns = []
+for i in range(num_cols):
     attribute = []
-    for row in data:
+    for row in rows:
         attribute.append(row[i])
     columns.append(attribute)
 
-# calculate entropy for class
-class_e = class_entropy(columns[num_cols - 1], num_rows, 2)
-print(class_e)
+# TESTING #
+categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
+id3_algorithm(categorical_rows, categorical_columns, 2)
 
-# create boundaries to discretize from - DONE MANUALLY (change for each .csv file)
-boundary1 = 0
-boundary2 = 0
-if file_name == 'synthetic-1.csv':
-    boundary1 = 4.6121
-    boundary2 = 2.91305
-elif file_name == 'synthetic-2.csv':
-    boundary1 = 0.0878
-    boundary2 = 2.61845
-elif file_name == 'synthetic-3.csv':
-    boundary1 = 1.96091
-    boundary2 = 0.6424
-elif file_name == 'synthetic-4.csv':
-    boundary1 = 4.05485
-    boundary2 = 0.6385
+choice = input('Enter (M) to enter a .csv file of testing data or (S) to enter a single piece of data: ')
 
-# calculate entropy and information gain for first column
-new_data, attribute_e1 = attribute_entropy(columns[0], boundary1, 0, num_rows, data, 'x')
-info_gain1 = information_gain(class_e, attribute_e1)
-print(attribute_e1)
-print(info_gain1)
+if choice == 'S' or choice == 's':
 
-# calculate entropy and information gain for second column
-new_data, attribute_e2 = attribute_entropy(columns[1], boundary2, 1, num_rows, data, 'y')
-info_gain2 = information_gain(class_e, attribute_e2)
-print(attribute_e2)
-print(info_gain2)
+    # ask user for input for attributes
+    inputA = input('Input a value for attribute A: ')
+    inputB = input('Input a value for attribute B: ')
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~ ID3 ~~~~~~~~~~~~~~~~~~~~~~~~~ #
+    # traverse tree to find target associated with input values from user
+    b = find_boundary(file_name)
 
-# find root node
-if info_gain1 > info_gain2:
-    root = 'A'
+    if float(inputA) <= b[0]: attributeA = 'x1'
+    elif float(inputA) > b[0]: attributeA = 'x2'
+
+    if float(inputB) <= b[1]: attributeB = 'y1'
+    elif float(inputB) > b[1]: attributeB = 'y2'
+
+    for j in range(len(tree)):
+        if attributeA == tree[j][0]:
+            if attributeB == tree[j][1]:
+                print('Predicted target: ', tree[j][2])
+
+elif choice == 'M' or choice == 'm':
+
+    file_choice = input('Please enter .csv file name of testing data: ')
+
+
+
 else:
-    root = 'B'
+    print('Invalid option. Please try again!')
 
-
-# # COLUMN A #
-# if info_gain1 > info_gain2:
-#
-#     root = 'A'
-#
-#     if attribute_e1 == 0:
-#         decision = columns[2][1]
-#     else:
-#
-#         bin1_data = []
-#         bin2_data = []
-#
-#         # only look at bin1 information
-#         for row in new_data:
-#             if row[0] == 'x1':
-#                 bin1_data.append(row[0])
-#             else:
-#                 bin2_data.append(row[0])
-#
-#         # calculate information gain of first bin
-#         minimum = min(bin1_data[0])
-#         maximum = max(bin1_data[0])
-#         avg = (minimum + maximum) / 2
-#         class_e = class_entropy(columns[num_cols - 1], len(bin1_data[0]), 2)
-#         new_data, attribute_e1 = attribute_entropy(bin1_data[2], avg, 0, len(bin1_data[0]), data, 'x')
-#         info_gain1 = information_gain(class_e, attribute_e1)
-#
-#         # calculate information gain of second bin
-#         minimum = min(bin2_data[0])
-#         maximum = max(bin2_data[0])
-#         avg = (minimum + maximum) / 2
-#         class_e = class_entropy(columns[num_cols - 1], len(bin2_data[0]), 2)
-#         new_data, attribute_e2 = attribute_entropy(bin2_data[2], avg, 0, len(bin2_data[0]), data, 'x')
-#         info_gain2 = information_gain(class_e, attribute_e2)
-#
-# # COLUMN B #
-# else:
-#     root = 'B'
-
-# branch off root node by using bi
-
-# based off root node, find next set of nodes (USING TWO BINS)
-
-
+# FORMAT
+# file to test:
+# predicted target:
+# actual target:
