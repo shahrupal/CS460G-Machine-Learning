@@ -1,10 +1,7 @@
 import csv
 import math
 import matplotlib
-<<<<<<< HEAD
 
-=======
->>>>>>> f1c682022c27703598432ad008c381e8a89de59c
 # ---------------------------------------------------- Functions ---------------------------------------------------- #
 
 
@@ -99,7 +96,6 @@ def class_entropy(columns):
             count1 += 1
     counts.append(count0)
     counts.append(count1)
-<<<<<<< HEAD
 
     for n in range(len(counts)):
         if counts[n] != 0:
@@ -113,21 +109,6 @@ def attribute_entropy(rows, column_num):
 
     final = 0
 
-=======
-
-    for n in range(len(counts)):
-        if counts[n] != 0:
-            entropy -= (counts[n] / total) * (math.log(counts[n] / total) / math.log(2))
-
-    return entropy
-
-
-# calculate entropy of each attribute column (columns A and B)
-def attribute_entropy(rows, column_num):
-
-    final = 0
-
->>>>>>> f1c682022c27703598432ad008c381e8a89de59c
     if column_num == 0:
         bin_name = 'x'
     elif column_num == 1:
@@ -212,7 +193,6 @@ def split_into_bins(rows, columns, column_num):
             bin2_col0.append(row[0])
             bin2_col1.append(row[1])
             bin2_col2.append(row[2])
-<<<<<<< HEAD
 
     bin1_columns.append(bin1_col0)
     bin1_columns.append(bin1_col1)
@@ -238,33 +218,6 @@ def split_into_bins(rows, columns, column_num):
 # return class with highest probability (to be used when no attributes left)
 def highest_probability(columns):
 
-=======
-
-    bin1_columns.append(bin1_col0)
-    bin1_columns.append(bin1_col1)
-    bin1_columns.append(bin1_col2)
-
-    bin2_columns.append(bin2_col0)
-    bin2_columns.append(bin2_col1)
-    bin2_columns.append(bin2_col2)
-
-    bin1 = []
-    bin2 = []
-    bins = []
-
-    bin1.append(bin1_rows)
-    bin1.append(bin1_columns)
-    bin2.append(bin2_rows)
-    bin2.append(bin2_columns)
-    bins.append(bin1)
-    bins.append(bin2)
-
-    return bins
-
-# return class with highest probability (to be used when no attributes left)
-def highest_probability(columns):
-
->>>>>>> f1c682022c27703598432ad008c381e8a89de59c
     count0 = 0
     count1 = 0
 
@@ -283,14 +236,11 @@ tree = []
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns, attributes_count):
 
-<<<<<<< HEAD
     for r in rows:
         print(r)
 
     print('-------------------')
 
-=======
->>>>>>> f1c682022c27703598432ad008c381e8a89de59c
     if attributes_count == 0:
 
         # store branch in tree
@@ -346,18 +296,10 @@ for i in range(num_cols):
         attribute.append(row[i])
     columns.append(attribute)
 
-<<<<<<< HEAD
-=======
-# ask user for input for attributes
-inputA = input('Input a value for attribute A: ')
-inputB = input('Input a value for attribute B: ')
-
->>>>>>> f1c682022c27703598432ad008c381e8a89de59c
 # TESTING #
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
 id3_algorithm(categorical_rows, categorical_columns, 2)
 
-<<<<<<< HEAD
 choice = input('Enter (M) to enter a .csv file of testing data or (S) to enter a single piece of data: ')
 
 if choice == 'S' or choice == 's':
@@ -371,26 +313,6 @@ if choice == 'S' or choice == 's':
 
     if float(inputA) <= b[0]: attributeA = 'x1'
     elif float(inputA) > b[0]: attributeA = 'x2'
-=======
-# traverse tree to find target associated with input values from user
-b = find_boundary(file_name)
-
-if float(inputA) <= b[0]: attributeA = 'x1'
-elif float(inputA) > b[0]: attributeA = 'x2'
-
-if float(inputB) <= b[1]: attributeB = 'y1'
-elif float(inputB) > b[1]: attributeB = 'y2'
-
-for j in range(len(tree)):
-    if attributeA == tree[j][0]:
-        if attributeB == tree[j][1]:
-            print('Predicted target: ', tree[j][2])
-
-
-
-
-
->>>>>>> f1c682022c27703598432ad008c381e8a89de59c
 
     if float(inputB) <= b[1]: attributeB = 'y1'
     elif float(inputB) > b[1]: attributeB = 'y2'
