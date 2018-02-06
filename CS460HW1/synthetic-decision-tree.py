@@ -294,9 +294,9 @@ def prediction(inputA, inputB):
     for j in range(len(tree)):
         if attributeA == tree[j][0]:
             if attributeB == tree[j][1]:
-                print('Predicted target: ', tree[j][2], '\n')
+                print('Predicted Target: ', tree[j][2])
+                return tree[j][2]
 
-    return tree[j][2]
 
 # ---------------------------------------------------- Main ---------------------------------------------------- #
 
@@ -353,11 +353,29 @@ elif choice == 'M' or choice == 'm':
         read = csv.reader(f, delimiter=',')
         data = list(read)
 
+        # add 1 to error every time predicted target does not match with actual target
+        error = 0
+        total = 0
+        iterator = 0
+
         # output prediction for each row of given data
         for r in data:
+
             print('Value for Attribute A:', r[0])
             print('Value for Attribute B:', r[1])
-            prediction(r[0], r[1])
+
+            predicted_target = prediction(r[0], r[1])
+            print('Correct Target Value:',columns[2][iterator],'\n')
+
+            if float(predicted_target) == float(columns[2][iterator]):
+                error += 1
+
+            total += 1
+            iterator += 1
+
+        error = ((total - error) / error) * 100
+        print('Error of Predictions:',round(error,2),'%')
+
 
 else:
     print('Invalid option. Please try again!')
