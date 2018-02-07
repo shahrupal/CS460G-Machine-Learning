@@ -107,15 +107,30 @@ def attribute_entropy(rows, columns, col_num):
         c = class_counter(classes)
         all_counts.append(c)
 
-    # should add up to 8134
-    t = 0
+    # calculate total (should add up to 8134 in this case)
+    total = 0
+    for x in range(len(all_counts)):
+        for y in range(len(all_counts[x])):
+            total += all_counts[x][y]
+    print(total)
+
+    probability = 0
+    entropy = 0
+    
+    # iterate through each attribute's class labels in order to calculate entropy
     for m in range(len(all_counts)):
+        subtotal = 0
+
         for n in range(len(all_counts[m])):
-            t += all_counts[m][n]
-    print(t)
+            subtotal += all_counts[m][n]
 
+        probability = subtotal / total
+        for p in range(len(all_counts[m])):
+            entropy -= (all_counts[m][p] / subtotal) * (math.log(all_counts[m][p] / subtotal) / (math.log(2)))
+        entropy = probability * entropy
 
-    # print(subtotal)
+    print(entropy)
+
 # -------------------------------- MAIN -------------------------------- #
 file_name = 'Video_Games_Sales.csv'
 file = open(file_name)
