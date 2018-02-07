@@ -368,6 +368,9 @@ def graph(rows, cols, name, tree):
         # color background according to predicted class label
         plt.gca().add_patch(Rectangle((start, end), width - start, length - end, alpha=0.5, facecolor=c))
 
+        # create border around decision boundary
+        plt.gca().add_patch(Rectangle((start, end), width - start, length - end, alpha=0.5, fill=None, facecolor='none'))
+
     # create legend
     red_key = patch.Patch(color='#4286F4', label='Class 0 (Actual)')
     blue_key = patch.Patch(color='#F75538', label='Class 1 (Actual)')
@@ -382,7 +385,7 @@ def graph(rows, cols, name, tree):
 
 
 # read in .csv file
-file_name = 'synthetic-4.csv'
+file_name = 'synthetic-1.csv'   ### CHANGE THIS VARIABLE TO CHANGE FILE BEING USED ###
 file = open(file_name)
 
 # store each row of data in 'rows' list (each row is stored in an index of 'rows')
