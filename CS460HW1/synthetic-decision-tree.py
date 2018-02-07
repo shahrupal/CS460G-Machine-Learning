@@ -382,7 +382,7 @@ def graph(rows, cols, name, tree):
 
 
 # read in .csv file
-file_name = 'synthetic-1.csv'
+file_name = 'synthetic-4.csv'
 file = open(file_name)
 
 # store each row of data in 'rows' list (each row is stored in an index of 'rows')
