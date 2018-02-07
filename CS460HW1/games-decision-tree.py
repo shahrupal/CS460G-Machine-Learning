@@ -187,11 +187,12 @@ def id3_algorithm(rows, columns, attributes_count):
 
         for r in rows:
             if r[highest_info_gain] == bins[k]:
+                print('thakn fucking fosh')
                 new_rows.append(r)
 
         for i in range(12):
             cols = []
-            for row in rows:
+            for row in new_rows:
                 cols.append(row[i])
             new_cols.append(cols)
 
