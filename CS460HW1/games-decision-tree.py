@@ -93,25 +93,29 @@ def class_entropy(columns):
 # calculate entropy of given attribute (specified by column number of attribute)
 def attribute_entropy(rows, columns, col_num):
 
-    classes = list(set(columns[col_num]))
-    print(classes)
+    unique_attributes = list(set(columns[col_num]))
 
-    # iterator = 0
-    # for r in rows:
-    #     iterator += 1
-    #     for i in range(12):
-    #         if r[col_num] == classes[iterator - 1]:
+    classes = []
+    all_counts = []
 
-    class_count = []
-    for i in range(len(classes)):
-        count = 0
+    for i in range(len(unique_attributes)):
         for r in rows:
-            if r[col_num] == classes[i]:
-                count += 1
-        class_count.append(count)
+            if r[col_num] == unique_attributes[i]:
+                classes.append(r[11])
+        c = class_counter(classes)
+        total = 0
+        for x in range(len(c)):
+            total += c[x]
+        print(total)
 
-    print(class_count)
 
+    # subtotal = 0
+    # for c in all_counts:
+    #     # print(c)
+    #     for i in range(len(c)):
+    #         subtotal += c[i]
+
+    # print(subtotal)
 # -------------------------------- MAIN -------------------------------- #
 file_name = 'Video_Games_Sales.csv'
 file = open(file_name)
@@ -133,4 +137,4 @@ for i in range(num_cols):
 
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns)
 class_entropy(categorical_columns)
-attribute_entropy(categorical_rows, categorical_columns, 6)
+attribute_entropy(categorical_rows, categorical_columns, 0)
