@@ -2,7 +2,9 @@ import csv
 import math
 import matplotlib.pyplot as plt
 import matplotlib.patches as patch
-import numpy as np
+from pylab import *
+from matplotlib.patches import Rectangle
+import copy
 # ---------------------------------------------------- Functions ---------------------------------------------------- #
 
 
@@ -295,10 +297,13 @@ def prediction(inputA, inputB):
                 return tree[j][2]
 
 
-def graph(rows, cols, name):
+def graph(rows, cols, name, tree):
 
     x = []
     y = []
+
+    # find boundaries of attributes
+    bounds = find_boundary(name)
 
     # store x and y coordinates
     for r in rows:
@@ -331,10 +336,45 @@ def graph(rows, cols, name):
     plt.xlabel('Attribute A')
     plt.ylabel('Attribute B')
 
+    start = 0
+    end = 0
+    width = 0
+    length = 0
+
+    # create decision bounds (background) - predicts class label for each value in graph
+    for branch in tree:
+
+        if branch[0] == 'x1' or branch[1] == 'x1':
+            start = x_min
+            width = bounds[0]
+        elif branch[0] == 'x2' or branch[1] == 'x2':
+            start = bounds[0]
+            width = x_max
+
+        if branch[0] == 'y1' or branch[1] == 'y1':
+            end = y_min
+            length = bounds[1]
+        elif branch[0] == 'y2' or branch[1] == 'y2':
+            end = bounds[1]
+            length = y_max
+
+        # find class label and set color accordingly
+        c = '#000000'
+        if branch[2] == 0:
+            c = '#8CFF72'
+        elif branch[2] == 1:
+            c = '#FFF771'
+
+        # color background according to predicted class label
+        plt.gca().add_patch(Rectangle((start, end), width - start, length - end, alpha=0.5, facecolor=c))
+
     # create legend
-    red_key = patch.Patch(color='#4286F4', label='Class 0')
-    blue_key = patch.Patch(color='#F75538', label='Class 1')
-    plt.legend(handles=[red_key, blue_key])
+    red_key = patch.Patch(color='#4286F4', label='Class 0 (Actual)')
+    blue_key = patch.Patch(color='#F75538', label='Class 1 (Actual)')
+    green_key = patch.Patch(color='#8CFF72', alpha=0.5, label='Class 0 (Predicted)')
+    yellow_key = patch.Patch(color='#FFF771', alpha=0.5, label='Class 1 (Predicted)')
+    plt.legend(handles=[red_key, blue_key, green_key, yellow_key])
+
     plt.show()
 
 
@@ -360,7 +400,8 @@ for i in range(num_cols):
         attribute.append(row[i])
     columns.append(attribute)
 
-graph(rows, columns, file_name)
+# creates copy of data that will not change when the original data is changed
+rows_copy = copy.deepcopy(rows)
 
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns, file_name)
 id3_algorithm(categorical_rows, categorical_columns, 2)
@@ -424,3 +465,4 @@ else:
 
 
 # ----------------------------------- GRAPH ----------------------------------- #
+graph(rows_copy, columns, file_name, tree)
