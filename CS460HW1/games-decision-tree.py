@@ -45,13 +45,14 @@ def convert_to_categorical_data(rows, columns):
                             row[i] = 'bin9'
 
     # CONVERT COLUMN DATA
+    cols = []
     for n in range(len(rows[0])):
-        a = []
+        attribute = []
         for r in rows:
-            a.append(r[n])
-        columns.append(a)
+            attribute.append(r[n])
+        cols.append(attribute)
 
-    return rows, columns
+    return rows, cols
 
 
 # calculate times each class appears and output list of counts
@@ -78,17 +79,23 @@ def class_counter(col):
 def class_entropy(columns):
 
     counts = class_counter(columns[11])
-    print(counts)
     total = len(columns[11])
 
     entropy = 0
 
     for n in range(len(counts)):
         if counts[n] != 0:
-            print(counts[n])
             entropy += -1 * (counts[n] / total) * (math.log(counts[n] / total) / math.log(2))
 
     return entropy
+
+
+# calculate entropy of given attribute (specified by column number of attribute)
+def attribute_entropy(rows, columns, col_num):
+
+    classes = list(set(columns[col_num]))
+    print(classes)
+
 
 
 # -------------------------------- MAIN -------------------------------- #
@@ -110,5 +117,6 @@ for i in range(num_cols):
         attribute.append(row[i])
     columns.append(attribute)
 
-convert_to_categorical_data(rows, columns)
-class_entropy(columns)
+categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns)
+class_entropy(categorical_columns)
+attribute_entropy(categorical_rows, categorical_columns, 6)
