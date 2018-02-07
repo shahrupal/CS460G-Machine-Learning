@@ -96,7 +96,21 @@ def attribute_entropy(rows, columns, col_num):
     classes = list(set(columns[col_num]))
     print(classes)
 
+    # iterator = 0
+    # for r in rows:
+    #     iterator += 1
+    #     for i in range(12):
+    #         if r[col_num] == classes[iterator - 1]:
 
+    class_count = []
+    for i in range(len(classes)):
+        count = 0
+        for r in rows:
+            if r[col_num] == classes[i]:
+                count += 1
+        class_count.append(count)
+
+    print(class_count)
 
 # -------------------------------- MAIN -------------------------------- #
 file_name = 'Video_Games_Sales.csv'
