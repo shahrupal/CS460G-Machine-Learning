@@ -98,22 +98,22 @@ def attribute_entropy(rows, columns, col_num):
     classes = []
     all_counts = []
 
+    # for each unique attribute in specified column, creates array of count for each class label
     for i in range(len(unique_attributes)):
+        classes = []
         for r in rows:
             if r[col_num] == unique_attributes[i]:
                 classes.append(r[11])
         c = class_counter(classes)
-        total = 0
-        for x in range(len(c)):
-            total += c[x]
-        print(total)
+        all_counts.append(c)
 
+    # should add up to 8134
+    t = 0
+    for m in range(len(all_counts)):
+        for n in range(len(all_counts[m])):
+            t += all_counts[m][n]
+    print(t)
 
-    # subtotal = 0
-    # for c in all_counts:
-    #     # print(c)
-    #     for i in range(len(c)):
-    #         subtotal += c[i]
 
     # print(subtotal)
 # -------------------------------- MAIN -------------------------------- #
