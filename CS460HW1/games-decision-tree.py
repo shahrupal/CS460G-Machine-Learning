@@ -1,5 +1,5 @@
 import csv
-import numpy as np
+import math
 
 
 # take original data and convert decimals to categorical data
@@ -51,10 +51,45 @@ def convert_to_categorical_data(rows, columns):
             a.append(r[n])
         columns.append(a)
 
-    for r in rows:
-        print(r)
-
     return rows, columns
+
+
+# calculate times each class appears and output list of counts
+def class_counter(col):
+
+    count = []
+
+    # prints each class
+    classes = list(set(col))
+
+    # prints number of times each class occurs
+    for x in classes:
+        counter = 0
+        for y in col:
+            if x == y:
+                counter = counter + 1
+        count.append(counter)
+
+    # returns list of number of class occurrences
+    return count
+
+
+# calculate entropy of class column (Critic_Score)
+def class_entropy(columns):
+
+    counts = class_counter(columns[11])
+    print(counts)
+    total = len(columns[11])
+
+    entropy = 0
+
+    for n in range(len(counts)):
+        if counts[n] != 0:
+            print(counts[n])
+            entropy += -1 * (counts[n] / total) * (math.log(counts[n] / total) / math.log(2))
+
+    return entropy
+
 
 # -------------------------------- MAIN -------------------------------- #
 file_name = 'Video_Games_Sales.csv'
@@ -75,6 +110,5 @@ for i in range(num_cols):
         attribute.append(row[i])
     columns.append(attribute)
 
-print(columns)
-
 convert_to_categorical_data(rows, columns)
+class_entropy(columns)
