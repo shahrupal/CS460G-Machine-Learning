@@ -1,25 +1,30 @@
 import csv
 import numpy as np
+
+
 # take original data and convert decimals to categorical data
-# divide into 10 equidistant bins
+# divide into 9 bins of the same amount of exampls
 # output new 'rows' and 'columns' lists with decimals replaced with strings
 def convert_to_categorical_data(rows, columns):
 
     # CONVERT ROW DATA
-
     index = 0
     for c in columns:
 
         index += 1
 
-        if c[0] == 'NA_Sales' or c[0] == 'EU_Sales' or c[0] == 'JP_Sales' or c[0] == 'Other_Sales' or c[0] == 'Global_Sales':
+        # for columns with data of floats, convert to categorical data
+        if index <= 9 and index >= 5:
 
             # SORT
+            rows = sorted(rows, key=lambda x:x[index-1])
 
+            # convert float to string based on index
             iteration = 0
-            for r in rows:
-                for i in range(len(r)):
-                    if i == index:
+            for row in rows:
+                iteration += 1
+                for i in range(len(row)):
+                    if i == index - 1:
                         if iteration <= 1000:
                             row[i] = 'bin1'
                         elif iteration <= 2000:
@@ -38,10 +43,16 @@ def convert_to_categorical_data(rows, columns):
                             row[i] = 'bin8'
                         elif iteration <= 9000:
                             row[i] = 'bin9'
-                            
-                # print(r[index - 1])
 
     # CONVERT COLUMN DATA
+    for n in range(len(rows[0])):
+        a = []
+        for r in rows:
+            a.append(r[n])
+        columns.append(a)
+
+    for r in rows:
+        print(r)
 
     return rows, columns
 
