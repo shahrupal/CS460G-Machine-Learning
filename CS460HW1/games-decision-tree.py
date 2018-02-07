@@ -1,5 +1,6 @@
 import csv
 import math
+import time
 
 
 # take original data and convert decimals to categorical data
@@ -138,32 +139,30 @@ def information_gain(rows, columns, col_num):
     return class_e - attribute_e
 
 
-# # return class with highest probability (to be used when no attributes left)
-# def highest_probability(columns):
-#
-#     count0 = 0
-#     count1 = 0
-#
-#     for i in range(len(columns[2])):
-#         if columns[2][i] == '0':
-#             count0 += 1
-#         else:
-#             count1 += 1
-#
-#     if count0 > count1: return 0
-#     else: return 1
+# return class with highest probability (to be used when no attributes left)
+def highest_probability(columns):
 
+    return max(columns[11],key=columns[i].count)
 
 depth = 0
 tree = []
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns, attributes_count):
 
-    input("continue...")
+    # input("continue...")
 
-    # if attributes_count == 0:
-    #
-    #     return highest_probability(columns)
+    # return if all class labels are the same
+    classes = []
+    for r in rows:
+        classes.append(r[11])
+        print(r)
+
+    if len(class_counter(classes)) < 2:
+        print('dats it bois')
+        return
+
+    if attributes_count == 0:
+        return highest_probability(columns)
 
     # will store information gain of column 0 in index 0, and so on
     info_gain = []
@@ -178,16 +177,18 @@ def id3_algorithm(rows, columns, attributes_count):
     print(highest_info_gain)
 
     bins = list(set(columns[highest_info_gain]))
+    print('bins: ', bins)
 
     # call function recursively for each bin
-    for k in range(12):
+    for k in range(len(bins)):
 
         new_rows = []
         new_cols = []
 
+        it = 0
         for r in rows:
+            it += 1
             if r[highest_info_gain] == bins[k]:
-                print('thakn fucking fosh')
                 new_rows.append(r)
 
         for i in range(12):
@@ -196,33 +197,50 @@ def id3_algorithm(rows, columns, attributes_count):
                 cols.append(row[i])
             new_cols.append(cols)
 
-        print('new')
-        print(new_rows)
-        print(new_cols)
-
-        id3_algorithm(new_rows, new_cols, attributes_count-1)
+        id3_algorithm(new_rows, new_cols, attributes_count - 1)
 
 # -------------------------------- MAIN -------------------------------- #
+
+
 file_name = 'Video_Games_Sales.csv'
 file = open(file_name)
 
+# eliminates and stores first row from data (attribute titles)
+first = file.readline()
+
 # store each row of data in 'rows' list (each row is stored in an index of 'rows')
 reader = csv.reader(file, delimiter=',')
-rows = list(reader)
+all_rows = list(reader)
+
+rows = []
+x = 0
+
+for row in all_rows:
+    empty_count = 0
+    for i in range(len(row)):
+        if row[i] == '':
+            empty_count += 1
+    if empty_count == 0:
+        rows.append(row)
 
 num_rows = len(rows)
 num_cols = len(rows[0])
 
 # store each column of data in 'columns' list (each column is stored in an index or 'columns')
 columns = []
+
 for i in range(num_cols):
     attribute = []
     for row in rows:
         attribute.append(row[i])
     columns.append(attribute)
 
+start = time.time()
+
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns)
 class_entropy(categorical_columns)
 attribute_entropy(categorical_rows, categorical_columns, 0)
 print(information_gain(categorical_rows, categorical_columns, 0))
 id3_algorithm(categorical_rows, categorical_columns, 11)
+
+print("Runtime is: ", time.time() - start)
