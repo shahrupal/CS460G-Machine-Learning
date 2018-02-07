@@ -112,11 +112,10 @@ def attribute_entropy(rows, columns, col_num):
     for x in range(len(all_counts)):
         for y in range(len(all_counts[x])):
             total += all_counts[x][y]
-    print(total)
 
     probability = 0
     entropy = 0
-    
+
     # iterate through each attribute's class labels in order to calculate entropy
     for m in range(len(all_counts)):
         subtotal = 0
@@ -129,7 +128,78 @@ def attribute_entropy(rows, columns, col_num):
             entropy -= (all_counts[m][p] / subtotal) * (math.log(all_counts[m][p] / subtotal) / (math.log(2)))
         entropy = probability * entropy
 
-    print(entropy)
+    return entropy
+
+
+# calculate information gain
+def information_gain(rows, columns, col_num):
+    class_e = class_entropy(columns)
+    attribute_e = attribute_entropy(rows, columns, col_num)
+    return class_e - attribute_e
+
+
+# # return class with highest probability (to be used when no attributes left)
+# def highest_probability(columns):
+#
+#     count0 = 0
+#     count1 = 0
+#
+#     for i in range(len(columns[2])):
+#         if columns[2][i] == '0':
+#             count0 += 1
+#         else:
+#             count1 += 1
+#
+#     if count0 > count1: return 0
+#     else: return 1
+
+
+depth = 0
+tree = []
+# create id3 algorithm to make a decision tree
+def id3_algorithm(rows, columns, attributes_count):
+
+    input("continue...")
+
+    # if attributes_count == 0:
+    #
+    #     return highest_probability(columns)
+
+    # will store information gain of column 0 in index 0, and so on
+    info_gain = []
+
+    # find information gain of each column (A, B)
+    for i in range(11):
+        gain = information_gain(rows, columns, i)
+        info_gain.append(gain)
+
+    # find number of column with largest information gain
+    highest_info_gain = info_gain.index(max(info_gain))
+    print(highest_info_gain)
+
+    bins = list(set(columns[highest_info_gain]))
+
+    # call function recursively for each bin
+    for k in range(12):
+
+        new_rows = []
+        new_cols = []
+
+        for r in rows:
+            if r[highest_info_gain] == bins[k]:
+                new_rows.append(r)
+
+        for i in range(12):
+            cols = []
+            for row in rows:
+                cols.append(row[i])
+            new_cols.append(cols)
+
+        print('new')
+        print(new_rows)
+        print(new_cols)
+
+        id3_algorithm(new_rows, new_cols, attributes_count-1)
 
 # -------------------------------- MAIN -------------------------------- #
 file_name = 'Video_Games_Sales.csv'
@@ -153,3 +223,5 @@ for i in range(num_cols):
 categorical_rows, categorical_columns = convert_to_categorical_data(rows, columns)
 class_entropy(categorical_columns)
 attribute_entropy(categorical_rows, categorical_columns, 0)
+print(information_gain(categorical_rows, categorical_columns, 0))
+id3_algorithm(categorical_rows, categorical_columns, 11)
