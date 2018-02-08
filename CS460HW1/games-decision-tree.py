@@ -149,8 +149,6 @@ tree = []
 # create id3 algorithm to make a decision tree
 def id3_algorithm(rows, columns, attributes_count):
 
-    # input("continue...")
-
     # return if all class labels are the same
     classes = []
     for r in rows:
