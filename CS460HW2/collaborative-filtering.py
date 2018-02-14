@@ -4,6 +4,7 @@
 #   1682 movies
 #   column 1 - user, 2 - movie, 3 - rating
 #   if user has not seen one of the movies, I set a default rating of 2.5 (half on the 1-5 rating scale)
+# Slow runtime
 
 import math
 
@@ -60,6 +61,10 @@ def cosine_similarity(person_num, movie_num, training_data):
 
             similarity_ratios.append(dot_product / magnitude)
 
+        # USE 0 AS PLACEHOLDER
+        else:
+            similarity_ratios.append(0)
+
     #     print(user)
 
     return similarity_ratios
@@ -85,9 +90,13 @@ movie = input("Please input the number of the movie you are interested in: ")
 # calculate cosine similarity for each piece of data in training
 similarities = cosine_similarity(int(person), int(movie), training_rows)
 print(similarities)
+print(len(similarities))
+
+# TODO:
 
 # for now k = 3
-# find 3 highest cosine similarity to given person & movie
 
-# k = 3
-# k_nearest_neighbors(k, similarities)
+# create function k_nearest_neighbors(k, similarities)
+# find highest 3 cosine similarities and their info - person & ratings (person = index + 1)
+
+# create function predicted_rating(highest_similarities, highest_info)
