@@ -14,18 +14,8 @@
       <file leaf-file-name="collaborative-filtering.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/collaborative-filtering.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="u-item.item" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/u-item.item">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="204">
+              <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -34,18 +24,8 @@
       <file leaf-file-name="u1-base.base" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/u1-base.base">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="89590">
-              <caret line="77502" column="21" lean-forward="true" selection-start-line="77502" selection-start-column="21" selection-end-line="77502" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="u-genre.genre" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/u-genre.genre">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="18" selection-end-column="10" />
+            <state relative-caret-position="178">
+              <caret line="77495" column="0" lean-forward="false" selection-start-line="77495" selection-start-column="0" selection-end-line="77495" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -63,7 +43,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>1682</find>
-      <find>1682</find>
+      <find>915</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -74,8 +54,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="25" />
-    <option name="y" value="-19" />
+    <option name="x" value="82" />
+    <option name="y" value="-18" />
     <option name="width" value="697" />
     <option name="height" value="735" />
   </component>
@@ -113,6 +93,9 @@
       </pane>
       <pane id="Scope" />
     </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Python" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -174,7 +157,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12371889" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -191,7 +173,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -213,13 +195,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/data/u1-base.base">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1317415">
-          <caret line="77495" column="8" lean-forward="false" selection-start-line="77495" selection-start-column="4" selection-end-line="77495" selection-end-column="8" />
+        <state relative-caret-position="1228029">
+          <caret line="72237" column="21" lean-forward="false" selection-start-line="72237" selection-start-column="21" selection-end-line="72237" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/u-genre.genre">
+    <entry file="file://$PROJECT_DIR$/collaborative-filtering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -227,6 +209,15 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/data/u1-base.base">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1317415">
+          <caret line="77495" column="8" lean-forward="false" selection-start-line="77495" selection-start-column="4" selection-end-line="77495" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/u-genre.genre" />
     <entry file="file://$PROJECT_DIR$/data/u1-test.test">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="123">
@@ -235,34 +226,26 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/u1-base.base" />
-    <entry file="file://$PROJECT_DIR$/data/u1-base.base">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="89590">
-          <caret line="77502" column="21" lean-forward="true" selection-start-line="77502" selection-start-column="21" selection-end-line="77502" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/u-genre.genre">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="18" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/data/u-genre.genre" />
     <entry file="file://$PROJECT_DIR$/data/u-item.item">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="901">
+          <caret line="53" column="94" lean-forward="false" selection-start-line="53" selection-start-column="93" selection-end-line="53" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/u1-base.base">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="77495" column="0" lean-forward="false" selection-start-line="77495" selection-start-column="0" selection-end-line="77495" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/collaborative-filtering.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state relative-caret-position="204">
+          <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
           <folding />
         </state>
       </provider>
