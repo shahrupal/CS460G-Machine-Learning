@@ -5,13 +5,15 @@
 #   column 1 - user, 2 - movie, 3 - rating
 #   if user has not seen one of the movies, I set a default rating of 2.5 (half on the 1-5 rating scale)
 
+import math
+
 # --------------------------------------- FUNCTIONS --------------------------------------- #
 
 
 # output list of cosine similarities for each piece of data
 def cosine_similarity(person_num, movie_num, training_data):
 
-    person_movie_data = []  # create list for each user and their rating for each movie
+    person_ratings_data = []  # create list for each user and their rating for each movie
     similarity_ratios = []
 
     # for each user
@@ -25,11 +27,39 @@ def cosine_similarity(person_num, movie_num, training_data):
             if int(row[0]) == i:
                  temp[int(row[1])] = int(row[2])
 
-        print(temp)
-        person_movie_data.append(temp)
+        # print(temp)
+        person_ratings_data.append(temp)
 
+    # store given user's data (number and ratings)
+    given_info = person_ratings_data[person_num - 1]
+    print(given_info)
 
-    # for user in person_movie_data:
+    # go through list of each user and their ratings
+    for info in person_ratings_data:
+
+        dot_product = 0  # numerator
+        magnitude = 0   # denominator
+        current_magnitude = 0
+        given_magintude = 0
+
+        # don't calculate cosine similarity between given person and themself
+        if info[0] != person_num:
+
+            # for each movie rating
+            for index in range(1, 1683):
+
+                # can't calculate similarity of movie user is trying to find rating of
+                if index != movie_num:
+
+                    dot_product += info[index] * given_info[index]
+                    current_magnitude += info[index] * info[index]
+                    given_magintude += given_info[index] * given_info[index]
+
+            # calculate magnitude of current person and given person
+            magnitude = math.sqrt(current_magnitude) * math.sqrt(given_magintude)
+
+            similarity_ratios.append(dot_product / magnitude)
+
     #     print(user)
 
     return similarity_ratios
@@ -53,7 +83,8 @@ person = input("Please input the number of the person you are interested in: ")
 movie = input("Please input the number of the movie you are interested in: ")
 
 # calculate cosine similarity for each piece of data in training
-similarities = cosine_similarity(person, movie, training_rows)
+similarities = cosine_similarity(int(person), int(movie), training_rows)
+print(similarities)
 
 # for now k = 3
 # find 3 highest cosine similarity to given person & movie
