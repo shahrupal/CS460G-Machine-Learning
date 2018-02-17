@@ -42,7 +42,7 @@ def cosine_similarity(user_id, movie_id, user_ratings):
 
     # store given user's data (number and ratings)
     given_info = user_ratings[user_id - 1]
-    print(given_info)
+    # print(given_info)
 
     iteration = 0
     similarity_ratios = []
@@ -97,7 +97,7 @@ def cosine_similarity(user_id, movie_id, user_ratings):
 def top_similarities(k, cosine_similarities):
 
     top = []
-    top.append(sorted(cosine_similarities, key=lambda x: (x[1]))[-3:])
+    top.append(sorted(cosine_similarities, key=lambda x: (x[1]))[-k:])
     return top
 
 # ----------------------------------------- MAIN ----------------------------------------- #
@@ -136,12 +136,12 @@ for test in tqdm(test_rows):
 
     # calculate cosine similarity for each piece of data in training
     similarities = cosine_similarity(int(test[0]), int(test[1]), user_ratings)
-    print(similarities)
+    # print(similarities)
 
     # find the k nearest neighbors
     k = 3
     nearest_neighbors = top_similarities(k, similarities)
-    print(nearest_neighbors)
+    # print(nearest_neighbors)
 
     # input("hi")
     #
