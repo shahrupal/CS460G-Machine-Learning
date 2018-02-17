@@ -101,15 +101,15 @@ def top_similarities(k, cosine_similarities):
 # if no similarities (no one has watched the given movie), make a prediction of 0
 def associated_ratings(user_ratings, k_similarities, movie_id):
 
-    ratings = [0] * 3
+    ratings = []
     iteration = 0
 
     for similarity in k_similarities:
 
-        ratings[iteration] = (user_ratings[similarity[0] - 1][movie_id])
+        ratings.append(user_ratings[similarity[0] - 1][movie_id])
         iteration += 1
 
-    print(ratings)
+    return ratings
 
 
 
@@ -148,21 +148,26 @@ print("LOL LOADING...")
 user_ratings = store_user_ratings(training_rows)
 
 # TEST ALL DATA
-for test in (test_rows):
+for test in tqdm(test_rows):
 
     # calculate cosine similarity for each piece of data in training
     similarities = cosine_similarity(int(test[0]), int(test[1]), user_ratings)
-    print(similarities)
+    # print(similarities)
 
     # find the k nearest neighbors
     k = 3
     nearest_neighbors = top_similarities(k, similarities)
-    print(nearest_neighbors)
+    # print(nearest_neighbors)
 
     # store ratings of movies associated with top 'k' similarities
-    neigbor_ratings = associated_ratings(user_ratings, nearest_neighbors, int(test[1]))
+    neighbor_ratings = associated_ratings(user_ratings, nearest_neighbors, int(test[1]))
+    # print(neighbor_ratings)
 
-    input("stop")
+
+    # FIND PREDICTION
+    # IF SIMILARITY LENGTH IS 0, PREDICT 0
+
+    # input("stop")
 
 
 
