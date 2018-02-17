@@ -33,9 +33,6 @@ def store_user_ratings(training_data):
 
     return person_ratings_data
 
-# output list of cosine similarities for each piece of data
-# def cosine_similarity(person_num, movie_num, training_data):
-
 
 # output list of cosine similarities for each piece of data
 def cosine_similarity(user_id, movie_id, user_ratings):
@@ -99,6 +96,27 @@ def top_similarities(k, cosine_similarities):
     top = (sorted(cosine_similarities, key=lambda x: (x[1]))[-k:])
     return top
 
+
+# find ratings of movies associated with top 3 similarities
+# if no similarities (no one has watched the given movie), make a prediction of 0
+def associated_ratings(user_ratings, k_similarities, movie_id):
+
+    ratings = [0] * 3
+    iteration = 0
+
+    for similarity in k_similarities:
+
+        ratings[iteration] = (user_ratings[similarity[0] - 1][movie_id])
+        iteration += 1
+
+    print(ratings)
+
+
+
+
+
+
+
 # ----------------------------------------- MAIN ----------------------------------------- #
 
 # open training data file
@@ -129,7 +147,6 @@ print("LOL LOADING...")
 # store ratings for given movie for each user
 user_ratings = store_user_ratings(training_rows)
 
-
 # TEST ALL DATA
 for test in (test_rows):
 
@@ -141,6 +158,9 @@ for test in (test_rows):
     k = 3
     nearest_neighbors = top_similarities(k, similarities)
     print(nearest_neighbors)
+
+    # store ratings of movies associated with top 'k' similarities
+    neigbor_ratings = associated_ratings(user_ratings, nearest_neighbors, int(test[1]))
 
     input("stop")
 
