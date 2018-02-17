@@ -112,10 +112,40 @@ def associated_ratings(user_ratings, k_similarities, movie_id):
     return ratings
 
 
+def predict_rating(similarities, ratings):
+
+    prediction = 0
+    numerator = 0
+    denominator = 0
+
+    for i in range(len(similarities)):
+
+        numerator += similarities[i][1] * ratings[i]
+        denominator += similarities[i][1]
+
+    if denominator != 0:
+        prediction = numerator / denominator
+
+    return prediction
 
 
+# return error squared for individual test point
+def find_error_squared(prediction, actual):
+
+    error = (prediction - actual) ** 2
+    return error
 
 
+# return mean squared average error
+def find_overall_error(errors, total):
+
+    overall_error = 0
+
+    for i in range(len(errors)):
+        overall_error += errors[i]
+
+    overall_error = overall_error / total
+    return overall_error
 
 # ----------------------------------------- MAIN ----------------------------------------- #
 
@@ -147,6 +177,8 @@ print("LOL LOADING...")
 # store ratings for given movie for each user
 user_ratings = store_user_ratings(training_rows)
 
+individual_error = []
+
 # TEST ALL DATA
 for test in tqdm(test_rows):
 
@@ -156,18 +188,23 @@ for test in tqdm(test_rows):
 
     # find the k nearest neighbors
     k = 3
-    nearest_neighbors = top_similarities(k, similarities)
+    nearest_similarities = top_similarities(k, similarities)
     # print(nearest_neighbors)
 
     # store ratings of movies associated with top 'k' similarities
-    neighbor_ratings = associated_ratings(user_ratings, nearest_neighbors, int(test[1]))
+    nearest_ratings = associated_ratings(user_ratings, nearest_similarities, int(test[1]))
     # print(neighbor_ratings)
-
 
     # FIND PREDICTION
     # IF SIMILARITY LENGTH IS 0, PREDICT 0
+    prediction = predict_rating(nearest_similarities, nearest_ratings)
+    # print(prediction)
 
+    individual_error.append(find_error_squared(prediction, int(test[2])))
+    # print(individual_error)
     # input("stop")
 
+# FIND OVERALL ERROR
+print(find_overall_error(individual_error, len(test_rows)))
 
 
