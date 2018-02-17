@@ -96,8 +96,7 @@ def cosine_similarity(user_id, movie_id, user_ratings):
 # output list of 'k' highest similarities (data of user with highest similarities)
 def top_similarities(k, cosine_similarities):
 
-    top = []
-    top.append(sorted(cosine_similarities, key=lambda x: (x[1]))[-k:])
+    top = (sorted(cosine_similarities, key=lambda x: (x[1]))[-k:])
     return top
 
 # ----------------------------------------- MAIN ----------------------------------------- #
@@ -132,20 +131,18 @@ user_ratings = store_user_ratings(training_rows)
 
 
 # TEST ALL DATA
-for test in tqdm(test_rows):
+for test in (test_rows):
 
     # calculate cosine similarity for each piece of data in training
     similarities = cosine_similarity(int(test[0]), int(test[1]), user_ratings)
-    # print(similarities)
+    print(similarities)
 
     # find the k nearest neighbors
     k = 3
     nearest_neighbors = top_similarities(k, similarities)
-    # print(nearest_neighbors)
+    print(nearest_neighbors)
 
-    # input("hi")
-    #
-    # # find the k nearest neighbors
-    # k = 3
-    # nearest_neighbors = top_similarities(k, similarities)
+    input("stop")
+
+
 
