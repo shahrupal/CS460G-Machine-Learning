@@ -6,10 +6,6 @@
 #   if user has not seen one of the movies, I set a default rating of 0
 # Slow runtime
 
-# IF TOP 3 SIMILARITY DOES NOT EXIST BC NOT EVEN 3 PEOPLE HAVE WATCHED THE GIVEN MOVIE
-# IF user has watched movie: add 1 to similarity so it is pushed to top list of similarity order
-# later, if similarity > 1, minus 1 to get true similarity
-
 import math
 import time
 from tqdm import tqdm
@@ -61,7 +57,8 @@ def cosine_similarity(user_id, movie_id, user_ratings):
         iteration += 1
 
         # don't calculate cosine similarity between given person and themself
-        if info[0] != user_id:
+        # don't calculate cosine similarity if user has not seen given movie (keep it set at 0)
+        if info[0] != user_id and info[movie_id] != 0:
 
             # for each movie rating
             for index in range(1, 1683):
@@ -79,15 +76,8 @@ def cosine_similarity(user_id, movie_id, user_ratings):
             t = []
             t.append(iteration)
 
-            # check if denominator does not equal 0
             if magnitude != 0:
-
-                # if user has seen given movie add 1 to similarity to push to top of sorted list (minus 1 later)
-                if info[movie_id] != 0:
-                    t.append(1 + (dot_product / magnitude))
-                else:
-                    t.append(dot_product / magnitude)
-
+                t.append(dot_product / magnitude)
             else:
                 t.append(0)
             similarity_ratios.append(t)
@@ -107,13 +97,6 @@ def cosine_similarity(user_id, movie_id, user_ratings):
 def top_similarities(k, cosine_similarities):
 
     top = (sorted(cosine_similarities, key=lambda x: (x[1]))[-k:])
-
-    # if similarity > 1 (user HAS watched given movie), minus 1 for true similarity
-    # takes into account if 'k' people have not watched the movie - in this case, uses next highest similarities
-    for sim in top:
-        if sim[1] > 1:
-            sim[1] = sim[1] - 1
-
     return top
 
 # ----------------------------------------- MAIN ----------------------------------------- #
