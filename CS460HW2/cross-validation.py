@@ -1,16 +1,6 @@
-# NOTES FOR DOCUMENTATION WRITE-UP:
-# Assumptions:
-#   943 users
-#   1682 movies
-#   column 1 - user, 2 - movie, 3 - rating
-#   if user has not seen one of the movies, I set a default rating of 0
-# Slow runtime
-
-import math
-import time
-from tqdm import tqdm
-
-
+import random
+import tqdm
+import copy
 # --------------------------------------- FUNCTIONS --------------------------------------- #
 
 def store_user_ratings(training_data):
@@ -58,7 +48,7 @@ def cosine_similarity(user_id, movie_id, user_ratings):
         if info[0] != user_id and info[movie_id] != 0:
 
             # for each movie rating
-            for index in range(1, 1683):
+            for index in range(len(user_ratings)):
 
                 # can't calculate similarity of movie user is trying to find rating of
                 if index != movie_id:
@@ -154,44 +144,57 @@ training_file = open("data/u1-base.base", "r")
 training_file_contents = training_file.read()
 
 # store each row in a list
-training_rows = []
+data = []
 for line in training_file_contents.splitlines():
-    training_rows.append(line.split())
+    data.append(line.split())
 
-# open training data file
-test_file = open("data/u1-test.test", "r")
-test_file_contents = test_file.read()
+# shuffle the training rows
+random.shuffle(data, random.random)
 
+# split data into 5 folds
+folds = []
+fold1 = data[0:16000]
+fold2 = data[16000:32000]
+fold3 = data[32000:48000]
+fold4 = data[48000:54000]
+fold5 = data[54000:60000]
 
-# store each row in a list
-test_rows = []
-for line in test_file_contents.splitlines():
-    test_rows.append(line.split())
+folds.append(fold1)
+folds.append(fold2)
+folds.append(fold3)
+folds.append(fold4)
+folds.append(fold5)
 
 print("LOL LOADING...")
 
-# store ratings for given movie for each user
-user_ratings = store_user_ratings(training_rows)
+k = 2
+for i in range(5):
 
-individual_error = []
+    training_rows = copy.copy(folds)
 
-# TEST ALL DATA
-for test in tqdm(test_rows):
+    test_rows = training_rows[i]
+    training_rows.pop(i)
 
-    # calculate cosine similarity for each piece of data in training
-    similarities = cosine_similarity(int(test[0]), int(test[1]), user_ratings)
+    print('temp', len(training_rows))
+    print(len(folds))
 
-    # find the k nearest neighbors
-    k = 3
-    nearest_similarities = top_similarities(k, similarities)
+    user_ratings = store_user_ratings(data)
+    individual_error = []
 
-    # store ratings of movies associated with top 'k' similarities
-    nearest_ratings = associated_ratings(user_ratings, nearest_similarities, int(test[1]))
+    # TEST ALL DATA
+    for test in tqdm(test_rows):
 
-    prediction = predict_rating(nearest_similarities, nearest_ratings)
+        similarities = cosine_similarity(int(test[0]), int(test[1]), user_ratings)
+        nearest_similarities = top_similarities(k, similarities)
+        nearest_ratings = associated_ratings(user_ratings, nearest_similarities, int(test[1]))
+        prediction = predict_rating(nearest_similarities, nearest_ratings)
+        individual_error.append(find_error_squared(prediction, int(test[2])))
 
-    individual_error.append(find_error_squared(prediction, int(test[2])))
+    k += 2
 
 # FIND OVERALL ERROR
 print(find_overall_error(individual_error, len(test_rows)))
+
+
+
 

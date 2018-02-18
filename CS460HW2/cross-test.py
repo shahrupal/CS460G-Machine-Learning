@@ -7,6 +7,8 @@
 # Slow runtime
 
 import math
+import copy
+import numpy
 import time
 from tqdm import tqdm
 
@@ -18,7 +20,7 @@ def store_user_ratings(training_data):
     person_ratings_data = []  # create list for each user and their rating for each movie
 
     # for each user
-    for i in range(1, 944):
+    for i in range(1, 943):
 
         temp = [0] * 1683  # index 0 = user, 1-1682 = rating of each movie (default value = 0)
         temp[0] = i
@@ -43,6 +45,8 @@ def cosine_similarity(user_id, movie_id, user_ratings):
 
     iteration = 0
     similarity_ratios = []
+
+    # print(user_ratings)
 
     # go through list of each user and their ratings
     for info in user_ratings:
@@ -158,25 +162,22 @@ training_rows = []
 for line in training_file_contents.splitlines():
     training_rows.append(line.split())
 
-# open training data file
-test_file = open("data/u1-test.test", "r")
-test_file_contents = test_file.read()
-
-
 # store each row in a list
-test_rows = []
-for line in test_file_contents.splitlines():
-    test_rows.append(line.split())
+test_rows = training_rows
 
 print("LOL LOADING...")
 
 # store ratings for given movie for each user
-user_ratings = store_user_ratings(training_rows)
+original_user_ratings = store_user_ratings(training_rows)
 
 individual_error = []
 
 # TEST ALL DATA
 for test in tqdm(test_rows):
+
+    # print(original_user_ratings)
+    user_ratings = copy.copy(original_user_ratings)
+    user_ratings.pop(int(test[0]) - 1)
 
     # calculate cosine similarity for each piece of data in training
     similarities = cosine_similarity(int(test[0]), int(test[1]), user_ratings)
