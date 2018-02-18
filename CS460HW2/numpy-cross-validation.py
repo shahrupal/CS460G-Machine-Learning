@@ -166,6 +166,8 @@ def main():
         folds.append(fold4)
         folds.append(fold5)
 
+        average_error = []
+
         # for each fold
         for i in range(5):
 
@@ -192,6 +194,11 @@ def main():
                 prediction = predict_rating(nearest_similarities, nearest_ratings)
                 individual_error.append(find_error_squared(prediction, int(test[2])))
 
-            print(find_overall_error(individual_error, len(testing)))
+            average_error.append(find_overall_error(individual_error, len(testing)))
 
+        average = 0
+        for j in range(len(average_error)):
+            average += average_error[j]
+
+        print("Average Error:", (average / len(average_error)))
 main()
