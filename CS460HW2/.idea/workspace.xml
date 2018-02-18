@@ -14,8 +14,8 @@
       <file leaf-file-name="collab-filtering.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/collab-filtering.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="21" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
+            <state relative-caret-position="122">
+              <caret line="155" column="26" lean-forward="true" selection-start-line="155" selection-start-column="26" selection-end-line="155" selection-end-column="26" />
               <folding>
                 <element signature="e#212#223#0" expanded="true" />
                 <element signature="e#2815#2892#0" expanded="false" />
@@ -24,24 +24,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cross-test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cross-test.py">
+      <file leaf-file-name="numpy-collaborative-filtering.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/numpy-collaborative-filtering.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding>
-                <element signature="e#212#223#0" expanded="true" />
-                <element signature="e#2867#2944#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="numpy-test.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/numpy-test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="185" column="20" lean-forward="false" selection-start-line="185" selection-start-column="20" selection-end-line="185" selection-end-column="20" />
+            <state relative-caret-position="95">
+              <caret line="190" column="0" lean-forward="false" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
               <folding>
                 <element signature="e#212#223#0" expanded="true" />
                 <element signature="e#2737#2814#0" expanded="false" />
@@ -50,35 +37,27 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cross-validation.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cross-validation.py">
+      <file leaf-file-name="numpy-cross-validation.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/numpy-cross-validation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="326">
-              <caret line="172" column="21" lean-forward="false" selection-start-line="172" selection-start-column="20" selection-end-line="172" selection-end-column="24" />
+            <state relative-caret-position="316">
+              <caret line="188" column="80" lean-forward="false" selection-start-line="188" selection-start-column="80" selection-end-line="188" selection-end-column="80" />
               <folding>
-                <element signature="e#0#13#0" expanded="true" />
-                <element signature="e#2603#2680#0" expanded="false" />
+                <element signature="e#212#223#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="u1-test.test" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/u1-test.test">
+      <file leaf-file-name="cross-validation.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cross-validation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191539">
-              <caret line="11267" column="21" lean-forward="false" selection-start-line="11267" selection-start-column="21" selection-end-line="11267" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="u1-base.base" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/u1-base.base">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="644691">
-              <caret line="37923" column="6" lean-forward="false" selection-start-line="37923" selection-start-column="4" selection-end-line="37923" selection-end-column="6" />
-              <folding />
+            <state relative-caret-position="207">
+              <caret line="172" column="4" lean-forward="true" selection-start-line="172" selection-start-column="4" selection-end-line="175" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#2603#2680#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -99,7 +78,6 @@
       <find>451</find>
       <find>0.0</find>
       <find>0.0,</find>
-      <find>pr</find>
       <find>movie_num</find>
       <find>argsort</find>
       <find>arg</find>
@@ -112,6 +90,8 @@
       <find>94</find>
       <find>cose</find>
       <find>copy</find>
+      <find>pr</find>
+      <find>given_in</find>
       <find>print</find>
     </findStrings>
   </component>
@@ -124,12 +104,15 @@
         <option value="$PROJECT_DIR$/cross-test.py" />
         <option value="$PROJECT_DIR$/numpy.py" />
         <option value="$PROJECT_DIR$/numpy-test.py" />
+        <option value="$PROJECT_DIR$/numpy-collaborative-filtering.py" />
+        <option value="$PROJECT_DIR$/test.py" />
+        <option value="$PROJECT_DIR$/numpy-cross-validation.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="225" />
-    <option name="y" value="-8" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-7" />
+    <option name="y" value="-14" />
     <option name="width" value="697" />
     <option name="height" value="726" />
   </component>
@@ -189,43 +172,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.cross-test">
-    <configuration name="collab-filtering" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="CS460HW2" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/collab-filtering.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
-    <configuration name="collaborative-filtering" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="CS460HW2" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/collaborative-filtering.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
+  <component name="RunManager" selected="Python.numpy-cross-validation">
     <configuration name="cross-test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -238,7 +185,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="CS460HW2" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/numpy-test.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\Rupal Shah\PycharmProjects\CS460HW2\numpy-collaborative-filtering.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -262,18 +209,74 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <list size="4">
-      <item index="0" class="java.lang.String" itemvalue="Python.collaborative-filtering" />
-      <item index="1" class="java.lang.String" itemvalue="Python.collab-filtering" />
-      <item index="2" class="java.lang.String" itemvalue="Python.cross-validation" />
-      <item index="3" class="java.lang.String" itemvalue="Python.cross-test" />
+    <configuration name="numpy-collaborative-filtering" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="CS460HW2" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/numpy-collaborative-filtering.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="numpy-cross-validation" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="CS460HW2" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/numpy-cross-validation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="CS460HW2" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Python.cross-validation" />
+      <item index="1" class="java.lang.String" itemvalue="Python.cross-test" />
+      <item index="2" class="java.lang.String" itemvalue="Python.numpy-collaborative-filtering" />
+      <item index="3" class="java.lang.String" itemvalue="Python.numpy-cross-validation" />
+      <item index="4" class="java.lang.String" itemvalue="Python.test" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python.cross-test" />
-        <item index="1" class="java.lang.String" itemvalue="Python.cross-validation" />
-        <item index="2" class="java.lang.String" itemvalue="Python.collab-filtering" />
-        <item index="3" class="java.lang.String" itemvalue="Python.collaborative-filtering" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.numpy-cross-validation" />
+        <item index="1" class="java.lang.String" itemvalue="Python.test" />
+        <item index="2" class="java.lang.String" itemvalue="Python.numpy-collaborative-filtering" />
+        <item index="3" class="java.lang.String" itemvalue="Python.cross-test" />
+        <item index="4" class="java.lang.String" itemvalue="Python.cross-validation" />
       </list>
     </recent_temporary>
   </component>
@@ -294,7 +297,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12371889" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -302,7 +305,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3074485" sideWeight="0.50292826" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3534073" sideWeight="0.49707174" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.50871634" sideWeight="0.49707174" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -324,7 +327,7 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3534073" sideWeight="0.49707174" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.50871634" sideWeight="0.49707174" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12371889" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -358,10 +361,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding>
-            <element signature="e#212#223#0" expanded="true" />
-            <element signature="e#2867#2944#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -392,7 +392,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/numpy-test.py">
+    <entry file="file://$PROJECT_DIR$/numpy-collaborative-filtering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="11" column="18" lean-forward="false" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="18" />
@@ -445,10 +445,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding>
-            <element signature="e#212#223#0" expanded="true" />
-            <element signature="e#2867#2944#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -512,44 +509,11 @@
     <entry file="file://$PROJECT_DIR$/data/u-genre.genre" />
     <entry file="file://$PROJECT_DIR$/data/u-item.item" />
     <entry file="file://$PROJECT_DIR$/collaborative-filtering.py" />
-    <entry file="file://$PROJECT_DIR$/cross-test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding>
-            <element signature="e#212#223#0" expanded="true" />
-            <element signature="e#2867#2944#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/collab-filtering.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="21" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
-          <folding>
-            <element signature="e#212#223#0" expanded="true" />
-            <element signature="e#2815#2892#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/u1-base.base">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="644691">
           <caret line="37923" column="6" lean-forward="false" selection-start-line="37923" selection-start-column="4" selection-end-line="37923" selection-end-column="6" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cross-validation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="172" column="21" lean-forward="false" selection-start-line="172" selection-start-column="20" selection-end-line="172" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#2603#2680#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -561,13 +525,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/numpy-test.py">
+    <entry file="file://$PROJECT_DIR$/cross-test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="185" column="20" lean-forward="false" selection-start-line="185" selection-start-column="20" selection-end-line="185" selection-end-column="20" />
+        <state relative-caret-position="-1879">
+          <caret line="19" column="45" lean-forward="false" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collab-filtering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="155" column="26" lean-forward="true" selection-start-line="155" selection-start-column="26" selection-end-line="155" selection-end-column="26" />
+          <folding>
+            <element signature="e#212#223#0" expanded="true" />
+            <element signature="e#2815#2892#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cross-validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="172" column="4" lean-forward="true" selection-start-line="172" selection-start-column="4" selection-end-line="175" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#2603#2680#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/numpy-collaborative-filtering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="190" column="0" lean-forward="false" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
           <folding>
             <element signature="e#212#223#0" expanded="true" />
             <element signature="e#2737#2814#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="19" lean-forward="false" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/numpy-cross-validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="188" column="80" lean-forward="false" selection-start-line="188" selection-start-column="80" selection-end-line="188" selection-end-column="80" />
+          <folding>
+            <element signature="e#212#223#0" expanded="true" />
           </folding>
         </state>
       </provider>
