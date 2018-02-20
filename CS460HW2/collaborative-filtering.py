@@ -1,26 +1,20 @@
-# NOTES FOR DOCUMENTATION WRITE-UP:
-# Assumptions:
-#   943 users
-#   1682 movies
-#   column 1 - user, 2 - movie, 3 - rating
-#   if user has not seen one of the movies, I set a default rating of 0
-# Slow runtime
-
 import math
-import time
 from tqdm import tqdm
-
 
 # --------------------------------------- FUNCTIONS --------------------------------------- #
 
+# outputs a list that has a list for each user and their ratings for all movies
+# defaults a rating of 0 if movie has not been seen by specific user
 def store_user_ratings(training_data):
 
-    person_ratings_data = []  # create list for each user and their rating for each movie
+    # create list for each user and their rating for each movie
+    person_ratings_data = []
 
     # for each user
     for i in range(1, 944):
 
-        temp = [0] * 1683  # index 0 = user, 1-1682 = rating of each movie (default value = 0)
+        # index 0 = user, 1-1682 = rating of each movie (default value = 0)
+        temp = [0] * 1683
         temp[0] = i
 
         # create a list with a rating for each movie
@@ -28,7 +22,6 @@ def store_user_ratings(training_data):
             if int(row[0]) == i:
                 temp[int(row[1])] = int(row[2])
 
-        # print(temp)
         person_ratings_data.append(temp)
 
     return person_ratings_data
@@ -39,7 +32,6 @@ def cosine_similarity(user_id, movie_id, user_ratings):
 
     # store given user's data (number and ratings)
     given_info = user_ratings[user_id - 1]
-    # print(given_info)
 
     iteration = 0
     similarity_ratios = []
@@ -50,7 +42,7 @@ def cosine_similarity(user_id, movie_id, user_ratings):
         dot_product = 0  # numerator
         magnitude = 0   # denominator
         current_magnitude = 0
-        given_magintude = 0
+        given_magnitude = 0
         iteration += 1
 
         # don't calculate cosine similarity between given person and themself
@@ -60,15 +52,15 @@ def cosine_similarity(user_id, movie_id, user_ratings):
             # for each movie rating
             for index in range(1, 1683):
 
-                # can't calculate similarity of movie user is trying to find rating of
+                # do not calculate similarity of movie user is trying to find rating of
                 if index != movie_id:
 
                     dot_product += info[index] * given_info[index]
                     current_magnitude += info[index] * info[index]
-                    given_magintude += given_info[index] * given_info[index]
+                    given_magnitude += given_info[index] * given_info[index]
 
             # calculate magnitude of current person and given person
-            magnitude = math.sqrt(current_magnitude) * math.sqrt(given_magintude)
+            magnitude = math.sqrt(current_magnitude) * math.sqrt(given_magnitude)
 
             t = []
             t.append(iteration)
@@ -86,7 +78,6 @@ def cosine_similarity(user_id, movie_id, user_ratings):
             t.append(0)
             similarity_ratios.append(t)
 
-    # print(similarity_ratios)
     return similarity_ratios
 
 
@@ -98,7 +89,6 @@ def top_similarities(k, cosine_similarities):
 
 
 # find ratings of movies associated with top 3 similarities
-# if no similarities (no one has watched the given movie), make a prediction of 0
 def associated_ratings(user_ratings, k_similarities, movie_id):
 
     ratings = []
@@ -112,6 +102,8 @@ def associated_ratings(user_ratings, k_similarities, movie_id):
     return ratings
 
 
+# uses top three similarities and associated ratings to make a prediction of rating of given movie for given user
+# if no similarities (no one has watched the given movie), make a prediction of 0
 def predict_rating(similarities, ratings):
 
     prediction = 0
@@ -129,14 +121,14 @@ def predict_rating(similarities, ratings):
     return prediction
 
 
-# return error squared for individual test point
+# return error squared for individual test set
 def find_error_squared(prediction, actual):
 
     error = (prediction - actual) ** 2
     return error
 
 
-# return mean squared average error
+# return mean squared error (overall error)
 def find_overall_error(errors, total):
 
     overall_error = 0
@@ -149,49 +141,56 @@ def find_overall_error(errors, total):
 
 # ----------------------------------------- MAIN ----------------------------------------- #
 
-# open training data file
-training_file = open("data/u1-base.base", "r")
-training_file_contents = training_file.read()
 
-# store each row in a list
-training_rows = []
-for line in training_file_contents.splitlines():
-    training_rows.append(line.split())
+def main():
 
-# open training data file
-test_file = open("data/u1-test.test", "r")
-test_file_contents = test_file.read()
+    # open training data file
+    training_file = open("data/u1-base.base", "r")
+    training_file_contents = training_file.read()
+
+    # store each row in a list
+    training_rows = []
+    for line in training_file_contents.splitlines():
+        training_rows.append(line.split())
+
+    # open training data file
+    test_file = open("data/u1-test.test", "r")
+    test_file_contents = test_file.read()
 
 
-# store each row in a list
-test_rows = []
-for line in test_file_contents.splitlines():
-    test_rows.append(line.split())
+    # store each row in a list
+    test_rows = []
+    for line in test_file_contents.splitlines():
+        test_rows.append(line.split())
 
-print("LOL LOADING...")
+    print("LOADING...")
 
-# store ratings for given movie for each user
-user_ratings = store_user_ratings(training_rows)
+    # store ratings for given movie for each user
+    user_ratings = store_user_ratings(training_rows)
 
-individual_error = []
+    individual_error = []
 
-# TEST ALL DATA
-for test in tqdm(test_rows):
+    # iterate through all test data in .test file
+    for test in tqdm(test_rows):
 
-    # calculate cosine similarity for each piece of data in training
-    similarities = cosine_similarity(int(test[0]), int(test[1]), user_ratings)
+        # calculate cosine similarity for each piece of data in training
+        similarities = cosine_similarity(int(test[0]), int(test[1]), user_ratings)
 
-    # find the k nearest neighbors
-    k = 3
-    nearest_similarities = top_similarities(k, similarities)
+        # find the k nearest neighbors
+        k = 3
+        nearest_similarities = top_similarities(k, similarities)
 
-    # store ratings of movies associated with top 'k' similarities
-    nearest_ratings = associated_ratings(user_ratings, nearest_similarities, int(test[1]))
+        # store ratings of movies associated with top 'k' similarities
+        nearest_ratings = associated_ratings(user_ratings, nearest_similarities, int(test[1]))
 
-    prediction = predict_rating(nearest_similarities, nearest_ratings)
+        # store prediction of rating
+        prediction = predict_rating(nearest_similarities, nearest_ratings)
 
-    individual_error.append(find_error_squared(prediction, int(test[2])))
+        # find error for individual test set
+        individual_error.append(find_error_squared(prediction, int(test[2])))
 
-# FIND OVERALL ERROR
-print(find_overall_error(individual_error, len(test_rows)))
+    # FIND OVERALL ERROR
+    print(find_overall_error(individual_error, len(test_rows)))
 
+
+main()

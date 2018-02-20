@@ -1,25 +1,23 @@
-import random
-import tqdm
+import math
 import copy
+import numpy as np
+from tqdm import tqdm
+
+np.set_printoptions(suppress=True)  # forces numpy to not use standard deviation
+
 # --------------------------------------- FUNCTIONS --------------------------------------- #
 
+
+# outputs a list for each user with their rating of each movie
+# if a movie has not been seen, the rating is set to 0
 def store_user_ratings(training_data):
 
-    person_ratings_data = []  # create list for each user and their rating for each movie
+    # create list for each user and their rating for each movie (create default value of 0)
+    person_ratings_data = np.zeros((943, 1682))
 
-    # for each user
-    for i in range(1, 944):
-
-        temp = [0] * 1683  # index 0 = user, 1-1682 = rating of each movie (default value = 0)
-        temp[0] = i
-
-        # create a list with a rating for each movie
-        for row in training_data:
-            if int(row[0]) == i:
-                temp[int(row[1])] = int(row[2])
-
-        # print(temp)
-        person_ratings_data.append(temp)
+    # fill in ratings for each movie
+    for row in training_data:
+        person_ratings_data[row[0] - 1][row[1] - 1] = float(row[2])
 
     return person_ratings_data
 
@@ -29,54 +27,36 @@ def cosine_similarity(user_id, movie_id, user_ratings):
 
     # store given user's data (number and ratings)
     given_info = user_ratings[user_id - 1]
-    # print(given_info)
 
     iteration = 0
     similarity_ratios = []
 
     # go through list of each user and their ratings
     for info in user_ratings:
-
-        dot_product = 0  # numerator
-        magnitude = 0   # denominator
-        current_magnitude = 0
-        given_magintude = 0
         iteration += 1
 
         # don't calculate cosine similarity between given person and themself
         # don't calculate cosine similarity if user has not seen given movie (keep it set at 0)
-        if info[0] != user_id and info[movie_id] != 0:
+        # otherwise, calculates cosine similarity
+        if iteration != user_id and info[movie_id - 1] != 0:
 
-            # for each movie rating
-            for index in range(len(user_ratings)):
+                dot_product = np.sum(info * given_info)
+                current_magnitude = np.sum(info * info)
+                given_magnitude = np.sum(given_info * given_info)
 
-                # can't calculate similarity of movie user is trying to find rating of
-                if index != movie_id:
+                # calculate magnitude of current person and given person
+                magnitude = math.sqrt(current_magnitude) * math.sqrt(given_magnitude)
 
-                    dot_product += info[index] * given_info[index]
-                    current_magnitude += info[index] * info[index]
-                    given_magintude += given_info[index] * given_info[index]
-
-            # calculate magnitude of current person and given person
-            magnitude = math.sqrt(current_magnitude) * math.sqrt(given_magintude)
-
-            t = []
-            t.append(iteration)
-
-            if magnitude != 0:
-                t.append(dot_product / magnitude)
-            else:
-                t.append(0)
-            similarity_ratios.append(t)
+                if magnitude != 0:
+                    sim = (dot_product / magnitude)
+                else:
+                    sim = 0
+                similarity_ratios.append([iteration, sim])
 
         # USE 0 AS PLACEHOLDER
         else:
-            t = []
-            t.append(iteration)
-            t.append(0)
-            similarity_ratios.append(t)
+            similarity_ratios.append([iteration, 0])
 
-    # print(similarity_ratios)
     return similarity_ratios
 
 
@@ -88,20 +68,18 @@ def top_similarities(k, cosine_similarities):
 
 
 # find ratings of movies associated with top 3 similarities
-# if no similarities (no one has watched the given movie), make a prediction of 0
 def associated_ratings(user_ratings, k_similarities, movie_id):
 
     ratings = []
-    iteration = 0
 
     for similarity in k_similarities:
-
-        ratings.append(user_ratings[similarity[0] - 1][movie_id])
-        iteration += 1
+        ratings.append(user_ratings[similarity[0] - 1][movie_id - 1])
 
     return ratings
 
 
+# output a prediction rating for a given movie for a given user
+# if no similarities (no one has watched the given movie), make a prediction of 0
 def predict_rating(similarities, ratings):
 
     prediction = 0
@@ -109,7 +87,6 @@ def predict_rating(similarities, ratings):
     denominator = 0
 
     for i in range(len(similarities)):
-
         numerator += similarities[i][1] * ratings[i]
         denominator += similarities[i][1]
 
@@ -126,7 +103,7 @@ def find_error_squared(prediction, actual):
     return error
 
 
-# return mean squared average error
+# return mean squared average error (overall error)
 def find_overall_error(errors, total):
 
     overall_error = 0
@@ -139,62 +116,95 @@ def find_overall_error(errors, total):
 
 # ----------------------------------------- MAIN ----------------------------------------- #
 
-# open training data file
-training_file = open("data/u1-base.base", "r")
-training_file_contents = training_file.read()
 
-# store each row in a list
-data = []
-for line in training_file_contents.splitlines():
-    data.append(line.split())
+def main():
 
-# shuffle the training rows
-random.shuffle(data, random.random)
+    # CROSS VALIDATE FOR EACH K VALUE
+    # k=2, k=4, k=6, k=8, k=10
+    for k in range(2, 12, 2):
 
-# split data into 5 folds
-folds = []
-fold1 = data[0:16000]
-fold2 = data[16000:32000]
-fold3 = data[32000:48000]
-fold4 = data[48000:54000]
-fold5 = data[54000:60000]
+        print('k =', k)
 
-folds.append(fold1)
-folds.append(fold2)
-folds.append(fold3)
-folds.append(fold4)
-folds.append(fold5)
+        # open training data file
+        training_file = open("data/u1-base.base", "r")
+        training_file_contents = training_file.read()
 
-print("LOL LOADING...")
+        # store each row in a list
+        training_rows = []
+        for line in training_file_contents.splitlines():
+            training_rows.append([int(x) for x in line.split()])
 
-k = 2
-for i in range(5):
+        # convert list to numpy array
+        training_rows = np.array(training_rows)
 
-    training_rows = copy.copy(folds)
+        # shuffle training rows
+        np.random.shuffle(training_rows)
 
-    test_rows = training_rows[i]
-    training_rows.pop(i)
+        # split training rows into five folds
+        fold1 = training_rows[0:16000]
+        fold2 = training_rows[16000:32000]
+        fold3 = training_rows[32000:48000]
+        fold4 = training_rows[48000:64000]
+        fold5 = training_rows[64000:80000]
 
-    print('temp', len(training_rows))
-    print(len(folds))
+        # add all folds to one list, in order to iterate
+        folds = []
+        folds.append(fold1)
+        folds.append(fold2)
+        folds.append(fold3)
+        folds.append(fold4)
+        folds.append(fold5)
 
-    user_ratings = store_user_ratings(data)
-    individual_error = []
+        average_error = []
 
-    # TEST ALL DATA
-    for test in tqdm(test_rows):
+        # for each fold
+        for i in range(5):
 
-        similarities = cosine_similarity(int(test[0]), int(test[1]), user_ratings)
-        nearest_similarities = top_similarities(k, similarities)
-        nearest_ratings = associated_ratings(user_ratings, nearest_similarities, int(test[1]))
-        prediction = predict_rating(nearest_similarities, nearest_ratings)
-        individual_error.append(find_error_squared(prediction, int(test[2])))
+            # deep copy the entire original training set
+            training = copy.copy(folds)
 
-    k += 2
+            # test on one fold
+            testing = training[i]
 
-# FIND OVERALL ERROR
-print(find_overall_error(individual_error, len(test_rows)))
+            # train on the rest of the folds
+            training.pop(i)
+            training = np.concatenate((training[0], training[1], training[2], training[3]), axis=0)
+
+            # store ratings for each movie for each user
+            user_ratings = store_user_ratings(training)
+            user_ratings = np.array(user_ratings)
+
+            individual_error = []
+
+            # TEST ALL DATA in testing fold
+            for test in tqdm(testing):
+
+                # store cosine similarities
+                similarities = cosine_similarity(test[0], test[1], user_ratings)
+
+                # store top 'k' similarities
+                nearest_similarities = top_similarities(k, similarities)
+
+                # store associated top 'k' ratings
+                nearest_ratings = associated_ratings(user_ratings, nearest_similarities, int(test[1]))
+
+                # store prediction of given movie for given user
+                prediction = predict_rating(nearest_similarities, nearest_ratings)
+
+                # store error for individual test data
+                individual_error.append(find_error_squared(prediction, int(test[2])))
+
+            # store overall error for one testing fold
+            average_error.append(find_overall_error(individual_error, len(testing)))
+
+        # average all errors of all five folds
+        average = 0
+        for j in range(len(average_error)):
+            average += average_error[j]
+
+        # output average error of k-value
+        print("Average Error:", (average / len(average_error)))
+        print("===================================================")
 
 
-
-
+main()
