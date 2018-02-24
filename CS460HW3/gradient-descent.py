@@ -6,6 +6,8 @@ import csv
 
 def gradient_descent(data, polynomial):
 
+    cost = 0
+
     # set alpha to 1/10
     learning_rate = 0.10
 
@@ -13,20 +15,41 @@ def gradient_descent(data, polynomial):
     intercept = 0  # theta sub zero
     slopes = [0] * polynomial  # theta sub 1 - polynomial
 
-    # for each point in the data set
-    for point in data:
+    for n in range(100):
 
-        # store x and y coordinates
-        x = float(point[0])
-        y = float(point[1])
+        # for each point in the data set
+        for point in data:
 
-        # make prediction for y value
-        # prediction = x *
+            # store x and y coordinates
+            x = float(point[0])
+            y = float(point[1])
 
-        # iterate through slope thetas (all thetas but theta sub zero - intercept)
-        for i in range(len(slopes)):
-            print(i)
+            # make a prediction of y
+            prediction = intercept
+            for i in range(polynomial):
+                prediction += slopes[i] * (x ** (i + 1))
 
+            error = prediction - y
+
+            # adjust alpha values
+            intercept = intercept - (learning_rate * error)
+            for j in range(len(slopes)):
+                slopes[j] = slopes[j] - (learning_rate * error * (x ** (j + 1)))
+
+            # calculate cost
+            prediction = intercept
+            for i in range(len(slopes)):
+                prediction += slopes[i] * (x ** (i + 1))
+
+            error = prediction - y
+            cost += error ** 2
+
+
+        cost = cost / (2 * len(data))
+        print(intercept)
+        print(slopes)
+        print(cost)
+        input('\n')
 
 
 def main():
