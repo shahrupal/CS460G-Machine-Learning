@@ -4,13 +4,9 @@
 import csv
 
 
-def gradient_descent(data, polynomial):
+def gradient_descent(data, polynomial, learning_rate):
 
     cost = 0
-
-
-    # set alpha to 1/10
-    learning_rate = 0.10
 
     # initialize all thetas to zero (guess zero as initial value)
     intercept = 0  # theta sub zero
@@ -35,7 +31,7 @@ def gradient_descent(data, polynomial):
 
             error = hypothesis - y
             intercept_sum += error
-            cost += error ** 2
+            # cost += error ** 2
 
             # sum error of each data point for theta sub one to polynomial (slopes)
             for j in range(len(slopes)):  # for each theta
@@ -45,23 +41,27 @@ def gradient_descent(data, polynomial):
                     hypothesis += slopes[j] * (x ** (k + 1))
 
                 error = hypothesis - y
-                slopes_sums[j] += (error * x)
+                slopes_sums[j] += (error * (x ** (j + 1)))
+                # cost += error ** 2
+
+                # calculate cost
+                prediction = intercept
+                for i in range(len(slopes)):
+                    prediction += slopes[i] * (x ** (i + 1))
+
+                error = prediction - y
                 cost += error ** 2
 
         # adjust theta values
         intercept = intercept - (learning_rate * (1 / len(data)) * intercept_sum)
-        # print("intercept: ", intercept)
         for m in range(len(slopes)):
             slopes[m] = slopes[m] - (learning_rate * (1 / len(data)) * slopes_sums[m])
-            # print("slope", m, ": ",slopes[m])
 
         cost = (1 / len(data)) * cost
 
     print(intercept)
     print(slopes)
     print(cost)
-        # print("You are on iteration: ", n)
-        # input("next")
 
 def main():
 
@@ -77,6 +77,12 @@ def main():
     rows = list(read)
 
     # call gradient descent on first-order polynomial
-    gradient_descent(rows, 4)
+    gradient_descent(rows, 1, 0.1)
+    print("--------------------------")
+    gradient_descent(rows, 2, 0.1)
+    print("--------------------------")
+    gradient_descent(rows, 4, 0.01)
+    print("--------------------------")
+    gradient_descent(rows, 9, 0.00001)
 
 main()
