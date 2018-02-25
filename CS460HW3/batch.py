@@ -7,8 +7,7 @@ import csv
 def gradient_descent(data, polynomial):
 
     cost = 0
-    intercept_sum = 0
-    slopes_sums = [0] * polynomial
+
 
     # set alpha to 1/10
     learning_rate = 0.10
@@ -18,6 +17,9 @@ def gradient_descent(data, polynomial):
     slopes = [0] * polynomial  # theta sub 1 - polynomial
 
     for n in range(1000):
+
+        intercept_sum = 0
+        slopes_sums = [0] * polynomial
 
         # for each point in the data set
         for point in data:
@@ -48,15 +50,18 @@ def gradient_descent(data, polynomial):
 
         # adjust theta values
         intercept = intercept - (learning_rate * (1 / len(data)) * intercept_sum)
-        print("intercept: ", intercept)
+        # print("intercept: ", intercept)
         for m in range(len(slopes)):
             slopes[m] = slopes[m] - (learning_rate * (1 / len(data)) * slopes_sums[m])
-            print("slope", m, ": ",slopes[m])
+            # print("slope", m, ": ",slopes[m])
 
         cost = (1 / len(data)) * cost
-        print(cost)
-        print("You are on interation: ", n)
-        input("next")
+
+    print(intercept)
+    print(slopes)
+    print(cost)
+        # print("You are on iteration: ", n)
+        # input("next")
 
 def main():
 
@@ -72,6 +77,6 @@ def main():
     rows = list(read)
 
     # call gradient descent on first-order polynomial
-    gradient_descent(rows, 1)
+    gradient_descent(rows, 4)
 
 main()
