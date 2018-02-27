@@ -2,6 +2,8 @@
 # actual output = Y = column 2
 
 import csv
+import matplotlib.pyplot as plt
+import numpy
 
 
 def gradient_descent(data, polynomial):
@@ -49,7 +51,41 @@ def gradient_descent(data, polynomial):
     print(intercept)
     print(slopes)
     print(cost)
+    return intercept, slopes
 
+
+# output plot of regression line and original data
+# i1 = intercept value of 1st polynomial
+# s1 = slope values of 1st polynomial
+def create_graph(i1, s1, i2, s2, i4, s4, i9, s9, data):
+
+    x = numpy.linspace(-2.5, 2.5)
+
+    y1 = i1
+    for i in range(len(s1)):
+        y1 += s1[i] * (x ** (i + 1))
+
+    y2 = i2
+    for i in range(len(s2)):
+        y2 += s2[i] * (x ** (i + 1))
+
+    y4 = i4
+    for i in range(len(s4)):
+        y4 += s4[i] * (x ** (i + 1))
+
+    y9 = i9
+    for i in range(len(s9)):
+        y9 += s9[i] * (x ** (i + 1))
+
+    plt.ylim((-2, 12))
+    plt.plot(x, y1)
+    plt.plot(x, y2)
+    plt.plot(x, y4)
+    plt.plot(x, y9)
+    plt.gca().set_aspect('equal')
+    plt.show()
+
+    print(x)
 
 
 def main():
@@ -66,13 +102,15 @@ def main():
     rows = list(read)
 
     # call gradient descent on first-order polynomial
-    gradient_descent(rows, 1)
+    intercept1, slopes1 = gradient_descent(rows, 1)
     print('========================')
-    gradient_descent(rows, 2)
+    intercept2, slopes2 = gradient_descent(rows, 2)
     print('========================')
-    gradient_descent(rows,4)
+    intercept4, slopes4 = gradient_descent(rows,4)
     print('========================')
-    gradient_descent(rows, 9)
+    intercept9, slopes9 = gradient_descent(rows, 9)
     print('========================')
+
+    create_graph(intercept1, slopes1, intercept2, slopes2, intercept4, slopes4, intercept9, slopes9, rows)
 
 main()
