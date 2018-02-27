@@ -2,9 +2,9 @@
 # actual output = Y = column 2
 
 import csv
-import matplotlib.pyplot as plt
 import numpy
-
+import matplotlib.pyplot as plt
+import matplotlib.patches as patch
 
 def gradient_descent(data, polynomial):
 
@@ -57,9 +57,8 @@ def gradient_descent(data, polynomial):
 # output plot of regression line and original data
 # i1 = intercept value of 1st polynomial
 # s1 = slope values of 1st polynomial
-def create_graph(i1, s1, i2, s2, i4, s4, i9, s9, data):
+def create_graph(i1, s1, i2, s2, i4, s4, i9, s9, rows, file_name):
 
-    # x = numpy.linspace(-2.5, 2.5)
     x = numpy.arange(-2.5, 2.5, step=0.01)
 
     y1 = i1
@@ -81,12 +80,35 @@ def create_graph(i1, s1, i2, s2, i4, s4, i9, s9, data):
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.tick_params(axis='x', pad=15)
-    ax.set_ylim(-2, 12)
 
-    ax.plot(x, y1)
-    ax.plot(x, y2)
-    ax.plot(x, y4)
-    ax.plot(x, y9)
+    # change y-axis for each file to include all data points
+    if file_name == "synthetic-1.csv":
+        ax.set_ylim(-2, 12)
+    elif file_name == "synthetic-2.csv":
+        ax.set_ylim(-20, 15)
+    elif file_name == "synthetic-3.csv":
+        ax.set_ylim(-2, 2)
+
+    # graph scatter plot
+    for i in range(len(rows)):
+        ax.scatter(float(rows[i][0]), float(rows[i][1]), color="#2484f2")
+
+    # plot polynomial equations on graph
+    ax.plot(x, y1, color="#f16823")
+    ax.plot(x, y2, color="#9822e8")
+    ax.plot(x, y4, color="#e82222")
+    ax.plot(x, y9, color="#2ab50a")
+
+    # create legend
+    orange_key = patch.Patch(color='#f16823', label='1st Order')
+    purple_key = patch.Patch(color='#9822e8', label='2nd Order')
+    red_key = patch.Patch(color='#e82222', label='4th Order')
+    green_key = patch.Patch(color='#2ab50a', label='9th Order')
+    plt.legend(handles=[orange_key, purple_key, red_key, green_key])
+
+    # set title and axes labels
+    fig.suptitle(file_name, fontsize=20)
+
     plt.show()
 
 
@@ -113,6 +135,6 @@ def main():
     intercept9, slopes9 = gradient_descent(rows, 9)
     print('========================')
 
-    create_graph(intercept1, slopes1, intercept2, slopes2, intercept4, slopes4, intercept9, slopes9, rows)
+    create_graph(intercept1, slopes1, intercept2, slopes2, intercept4, slopes4, intercept9, slopes9, rows, "synthetic-"+file_name+".csv")
 
 main()
