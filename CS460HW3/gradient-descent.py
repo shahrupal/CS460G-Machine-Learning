@@ -59,7 +59,8 @@ def gradient_descent(data, polynomial):
 # s1 = slope values of 1st polynomial
 def create_graph(i1, s1, i2, s2, i4, s4, i9, s9, data):
 
-    x = numpy.linspace(-2.5, 2.5)
+    # x = numpy.linspace(-2.5, 2.5)
+    x = numpy.arange(-2.5, 2.5, step=0.01)
 
     y1 = i1
     for i in range(len(s1)):
@@ -77,15 +78,16 @@ def create_graph(i1, s1, i2, s2, i4, s4, i9, s9, data):
     for i in range(len(s9)):
         y9 += s9[i] * (x ** (i + 1))
 
-    plt.ylim((-2, 12))
-    plt.plot(x, y1)
-    plt.plot(x, y2)
-    plt.plot(x, y4)
-    plt.plot(x, y9)
-    plt.gca().set_aspect('equal')
-    plt.show()
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.tick_params(axis='x', pad=15)
+    ax.set_ylim(-2, 12)
 
-    print(x)
+    ax.plot(x, y1)
+    ax.plot(x, y2)
+    ax.plot(x, y4)
+    ax.plot(x, y9)
+    plt.show()
 
 
 def main():
