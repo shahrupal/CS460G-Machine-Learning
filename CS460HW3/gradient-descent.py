@@ -10,13 +10,14 @@ import matplotlib.patches as patch
 def gradient_descent(data, polynomial):
 
     # set alpha
-    learning_rate = 0.00001
+    learning_rate = 0.000001
 
     # initialize all thetas to zero (guess zero as initial value)
     intercept = 0  # theta sub zero
     slopes = [0] * polynomial  # theta sub 1 - polynomial
 
-    for n in range(10000):
+    iterations = 50000
+    for n in range(iterations):
 
         cost = 0
 
@@ -45,14 +46,14 @@ def gradient_descent(data, polynomial):
             for k in range(len(slopes)):
                 prediction += slopes[k] * (x ** (k + 1))
 
-            error = prediction - y
-            cost += error ** 2
+            # only calculate mse on last iteration
+            if n == (iterations - 1):
+                error = prediction - y
+                cost += (error ** 2)
 
-    cost = cost / (len(data))
-    # print(intercept)
-    # print(slopes)
-    # print(cost)
-    return intercept, slopes
+        cost = cost / (len(data))
+
+    return intercept, slopes, cost
 
 
 # output plot of regression line and original data
@@ -127,19 +128,28 @@ def main():
     rows = list(read)
 
     # call gradient descent on first-order polynomial
-    intercept1, slopes1 = gradient_descent(rows, 1)
-    print("1st Order Polynomial Regression Line: Y = {} + ({})X".format(intercept1, slopes1[0]))
     print('========================')
-    intercept2, slopes2 = gradient_descent(rows, 2)
-    print("2nd Order Polynomial Regression Line: Y = {} + ({})X + ({})X^2".format(intercept2, slopes2[0], slopes2[1]))
+    intercept1, slopes1, mse1 = gradient_descent(rows, 1)
+    print("1st Order Polynomial Regression Line: \nY = {} + ({})X".format(intercept1, slopes1[0]))
+    print("\nMean-Squared Error:\n{}".format(mse1))
     print('========================')
-    intercept4, slopes4 = gradient_descent(rows,4)
-    print("4th Order Polynomial Regression Line: Y = {} + ({})X + ({})X^2 + ({})X^3 + ({})X^4".format(intercept4, slopes4[0], slopes4[1], slopes4[2], slopes4[3]))
+
+    intercept2, slopes2, mse2 = gradient_descent(rows, 2)
+    print("2nd Order Polynomial Regression Line: \nY = {} + ({})X + ({})X^2".format(intercept2, slopes2[0], slopes2[1]))
+    print("\nMean-Squared Error:\n{}".format(mse2))
     print('========================')
-    intercept9, slopes9 = gradient_descent(rows, 9)
-    print("9th Order Polynomial Regression Line: Y = {} + ({})X + ({})X^2 + ({})X^3 + ({})X^4 + ({})X^5 + ({})X^6 + ({})X^7 + ({})X^8 + ({})X^9".format(round(intercept9,5), round(slopes9[0],5), round(slopes9[1],5), round(slopes9[2],5), round(slopes9[3],5), round(slopes9[4],5), round(slopes9[5],5), round(slopes9[6],5), round(slopes9[7],5), round(slopes9[8],5)))
+
+    intercept4, slopes4, mse4 = gradient_descent(rows,4)
+    print("4th Order Polynomial Regression Line: \nY = {} + ({})X + ({})X^2 + ({})X^3 + ({})X^4".format(intercept4, slopes4[0], slopes4[1], slopes4[2], slopes4[3]))
+    print("\nMean-Squared Error:\n{}".format(mse4))
+    print('========================')
+
+    intercept9, slopes9, mse9 = gradient_descent(rows, 9)
+    print("9th Order Polynomial Regression Line: \nY = {} + ({})X + ({})X^2 + ({})X^3 + ({})X^4 + ({})X^5 + ({})X^6 + ({})X^7 + ({})X^8 + ({})X^9".format(round(intercept9,5), round(slopes9[0],5), round(slopes9[1],5), round(slopes9[2],5), round(slopes9[3],5), round(slopes9[4],5), round(slopes9[5],5), round(slopes9[6],5), round(slopes9[7],5), round(slopes9[8],5)))
+    print("\nMean-Squared Error:\n{}".format(mse9))
     print('========================')
     print("*NOTE: the intercept and slope values in the 9th order polynomial equation are rounded to 5 decimal places")
+
     create_graph(intercept1, slopes1, intercept2, slopes2, intercept4, slopes4, intercept9, slopes9, rows, "synthetic-"+file_name+".csv")
 
 
