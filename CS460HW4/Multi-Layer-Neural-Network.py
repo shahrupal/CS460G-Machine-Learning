@@ -7,7 +7,10 @@ def sigmoid(nodes):
 
     activations = []
     for i in range(len(nodes)):
-        sig = 1 / (1 + math.exp(-1 * nodes[i]))
+        try:
+            sig = 1 / (1 + math.exp(-1 * nodes[i]))
+        except:
+            sig = 0
         activations.append(sig)
 
     return activations
@@ -15,11 +18,12 @@ def sigmoid(nodes):
 
 def feed_forward_training(data):
 
+    alpha = 0.05
     hidden_layer_nodes = 10
 
     # 1. initialize weights in network to small random numbers
-    input_weights = np.random.uniform(low=0, high=0.01, size=(hidden_layer_nodes,784))
-    hidden_weights = np.random.uniform(low=0, high=0.01, size=(2,hidden_layer_nodes))
+    input_weights = np.random.uniform(low=0, high=1, size=(hidden_layer_nodes,784))
+    hidden_weights = np.random.uniform(low=0, high=1, size=(2,hidden_layer_nodes))
 
     for row in data:
 
@@ -39,13 +43,25 @@ def feed_forward_training(data):
             updated_output_nodes.append(output_activations[j] * (1 - output_activations[j]) * (j - output_activations[j]))
 
         # for each node i in hidden layer
-        # updated_hidden_nodes = []
-        # for i in range(len(hidden_layer)):
-        #
-        #
-        # input("next")
+        updated_hidden_nodes = []
+        for i in range(len(hidden_layer)):
+
+            summation = np.sum(np.transpose(hidden_weights)[i] * updated_output_nodes)
+            updated_hidden_nodes.append(hidden_activations[i] * (1 - hidden_activations[i]) * summation)
 
 
+        print(output_activations)
+        print(updated_hidden_nodes)
+
+        # update hidden layer weights
+        print(hidden_weights)
+        for m in range(len(hidden_weights)):
+            for n in range(len(hidden_weights[m])):
+                hidden_weights[m][n] = hidden_weights[m][n] + (alpha * output_activations[m] * updated_hidden_nodes[m])
+        print(hidden_weights)
+
+        # update input layer weights
+        input("next")
 
 def main():
 
@@ -54,5 +70,6 @@ def main():
     data = np.loadtxt(filename, delimiter=',')
 
     feed_forward_training(data)
+
 
 main()
