@@ -17,26 +17,34 @@ def feed_forward_training(data):
 
     hidden_layer_nodes = 10
 
-    # create random weights for each line between input nodes and hidden layer nodes
+    # 1. initialize weights in network to small random numbers
     input_weights = np.random.uniform(low=0, high=0.01, size=(hidden_layer_nodes,784))
-
-    # create random weights for each line between hidden layer nodes and output nodes
     hidden_weights = np.random.uniform(low=0, high=0.01, size=(2,hidden_layer_nodes))
 
-    # train on each row
     for row in data:
 
+        # 2. given an example, run the network
         input_layer = row[1:]
-        
+
         hidden_layer = np.dot(input_weights, input_layer)
         hidden_activations = np.array(sigmoid(hidden_layer))
 
         output_layer = (np.dot(hidden_weights, hidden_activations))
         output_activations = np.array(sigmoid(output_layer))
 
-        print(hidden_activations)
-        print(output_activations)
-        input("next")
+        # 3. propagate backwards
+        # for each node j in output layer
+        updated_output_nodes = []
+        for j in range(len(output_layer)):
+            updated_output_nodes.append(output_activations[j] * (1 - output_activations[j]) * (j - output_activations[j]))
+
+        # for each node i in hidden layer
+        # updated_hidden_nodes = []
+        # for i in range(len(hidden_layer)):
+        #
+        #
+        # input("next")
+
 
 
 def main():
