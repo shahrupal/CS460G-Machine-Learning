@@ -27,15 +27,15 @@ def feed_forward_training(data):
     for row in data:
 
         input_layer = row[1:]
-        hidden_layer = np.dot(input_weights,input_layer)
-        output_layer = np.dot(hidden_weights,hidden_layer)
-
-        # find activation value of each node in layers
+        
+        hidden_layer = np.dot(input_weights, input_layer)
         hidden_activations = np.array(sigmoid(hidden_layer))
+
+        output_layer = (np.dot(hidden_weights, hidden_activations))
         output_activations = np.array(sigmoid(output_layer))
 
-        print(hidden_activations.shape)
-        print(output_activations.shape)
+        print(hidden_activations)
+        print(output_activations)
         input("next")
 
 
