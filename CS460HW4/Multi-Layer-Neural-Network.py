@@ -39,81 +39,76 @@ def sigmoid(nodes, epsilon):
 
 def feed_forward_training(data, testing_data, one_hot_list):
 
-    alpha = 0.05
+    alpha = 0.005
     epsilon = 0.0001
-    hidden_layer_nodes = 3
+    hidden_layer_nodes = 8
+    epoch = 0
 
     # 1. initialize weights in network to small random numbers
     input_weights = np.random.uniform(low=-1, high=1, size=(784, hidden_layer_nodes))
     hidden_weights = np.random.uniform(low=-1, high=1, size=(hidden_layer_nodes, 2))
 
-    print("BEFORE")
-    print(input_weights)
-    print(hidden_weights)
+    while epoch < 5:
+        for row in tqdm(data):
 
-    for row in tqdm(data):
+            # 2. given an example, run the network
+            input_layer = row[1:]
+            one_hot = one_hot_list[int(row[0])]
 
-        # 2. given an example, run the network
-        input_layer = row[1:]
-        one_hot = one_hot_list[int(row[0])]
+            hidden_layer = np.dot(np.transpose(input_weights), input_layer)
+            hidden_activations = np.array(sigmoid(hidden_layer, epsilon))
 
-        hidden_layer = np.dot(np.transpose(input_weights), input_layer)
-        hidden_activations = np.array(sigmoid(hidden_layer, epsilon))
-        # print("hidden activations", hidden_activations)
+            output_layer = (np.dot(np.transpose(hidden_weights), hidden_activations))
+            output_activations = np.array(sigmoid(output_layer, epsilon))
 
-        output_layer = (np.dot(np.transpose(hidden_weights), hidden_activations))
-        output_activations = np.array(sigmoid(output_layer, epsilon))
-        # print("output activations", output_activations)
+            # 3. propagate backwards
+            # for each node j in output layer
+            updated_output_nodes = []
+            for j in range(len(output_layer)):
+                updated_output_nodes.append(output_activations[j] * (1 - output_activations[j]) * (one_hot[j] - output_activations[j]))
 
-        # 3. propagate backwards
-        # for each node j in output layer
-        updated_output_nodes = []
-        for j in range(len(output_layer)):
-            updated_output_nodes.append(output_activations[j] * (1 - output_activations[j]) * (one_hot[j] - output_activations[j]))
-        # print("delta j", updated_output_nodes)
+            # for each node i in hidden layer
+            updated_hidden_nodes = []
+            for i in range(len(hidden_layer)):
+                summation = (hidden_weights[i][0] * updated_output_nodes[0]) + (hidden_weights[i][1] * updated_output_nodes[1])
+                updated_hidden_nodes.append(hidden_activations[i] * (1 - hidden_activations[i]) * summation)
 
-        # for each node i in hidden layer
-        updated_hidden_nodes = []
-        for i in range(len(hidden_layer)):
-            summation = (hidden_weights[i][0] * updated_output_nodes[0]) + (hidden_weights[i][1] * updated_output_nodes[1])
-            updated_hidden_nodes.append(hidden_activations[i] * (1 - hidden_activations[i]) * summation)
-        # print("delta i", updated_hidden_nodes)
+            # update hidden layer weights
+            for m in range(len(hidden_weights)):
+                for n in range(len(hidden_weights[m])):
+                    hidden_weights[m][n] = hidden_weights[m][n] + (alpha * hidden_activations[m] * updated_output_nodes[n])
 
-        # update hidden layer weights
-        # print("before:",hidden_weights)
-        for m in range(len(hidden_weights)):
-            for n in range(len(hidden_weights[m])):
-                hidden_weights[m][n] = hidden_weights[m][n] + (alpha * hidden_activations[m] * updated_output_nodes[n])
-        # print("after",hidden_weights)
+            # update input layer weights
+            for r in range(len(input_weights)):
+                for s in range(len(input_weights[r])):
+                    input_weights[r][s] = input_weights[r][s] + (alpha * input_layer[r] * updated_hidden_nodes[s])
 
-        # update input layer weights
-        # print("before:",input_weights)
-        for r in range(len(input_weights)):
-            for s in range(len(input_weights[r])):
-                input_weights[r][s] = input_weights[r][s] + (alpha * input_layer[r] * updated_hidden_nodes[s])
-        # print("after:",input_weights)
 
-    print("AFTER")
-    print(input_weights)
-    print(hidden_weights)
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  TESTING  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+        correct = 0
+        for row in testing_data:
 
-    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  TESTING  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-    for row in tqdm(testing_data):
+            # 2. given an example, run the network
+            input_layer = row[1:]
 
-        # 2. given an example, run the network
-        input_layer = row[1:]
-        one_hot = one_hot_list[int(row[0])]
+            hidden_layer = np.dot(np.transpose(input_weights), input_layer)
+            hidden_activations = np.array(sigmoid(hidden_layer, epsilon))
+            # print("hidden activations", hidden_activations)
 
-        hidden_layer = np.dot(np.transpose(input_weights), input_layer)
-        hidden_activations = np.array(sigmoid(hidden_layer, epsilon))
-        # print("hidden activations", hidden_activations)
+            output_layer = (np.dot(np.transpose(hidden_weights), hidden_activations))
+            output_activations = np.array(sigmoid(output_layer, epsilon))
+            # print("output activations", output_activations)
 
-        output_layer = (np.dot(np.transpose(hidden_weights), hidden_activations))
-        output_activations = np.array(sigmoid(output_layer, epsilon))
-        # print("output activations", output_activations)
+            actual = int(row[0])
+            guess = np.argmax(output_activations)
 
-        guess = max(output_activations).index
+            if int(actual) == int(guess):
+                correct += 1
 
+        error = correct / len(testing_data)
+        tqdm.write("\nPercent Error:")
+        print(error)
+        epoch += 1
 
 
 def main():
@@ -129,9 +124,7 @@ def main():
 
     testing_data = np.loadtxt(testing_file, delimiter=',')
 
-
     one_hot = one_hot_lists(filename)
     feed_forward_training(training_data, testing_data, one_hot)
-
 
 main()
