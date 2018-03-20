@@ -1,6 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 import math
+import sys
 
 
 def one_hot_lists(name):
@@ -37,18 +38,28 @@ def sigmoid(nodes, epsilon):
     return activations
 
 
+# create a print function to avoid formatting issues
+def print_errors(errors):
+    for i in range(len(errors)):
+        print("Epoch", i+1)
+        print("Percent Error:", errors[i]*100)
+
+
+# create a neural network with feed forward method
+# use back-propagation to train neural network
 def feed_forward_training(data, testing_data, one_hot_list):
 
     alpha = 0.005
     epsilon = 0.0001
-    hidden_layer_nodes = 8
-    epoch = 0
+    hidden_layer_nodes = 5
 
     # 1. initialize weights in network to small random numbers
     input_weights = np.random.uniform(low=-1, high=1, size=(784, hidden_layer_nodes))
     hidden_weights = np.random.uniform(low=-1, high=1, size=(hidden_layer_nodes, 2))
 
-    while epoch < 5:
+    errors = []
+    for epoch in range(10):
+
         for row in tqdm(data):
 
             # 2. given an example, run the network
@@ -83,7 +94,6 @@ def feed_forward_training(data, testing_data, one_hot_list):
                 for s in range(len(input_weights[r])):
                     input_weights[r][s] = input_weights[r][s] + (alpha * input_layer[r] * updated_hidden_nodes[s])
 
-
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  TESTING  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
         correct = 0
         for row in testing_data:
@@ -93,11 +103,9 @@ def feed_forward_training(data, testing_data, one_hot_list):
 
             hidden_layer = np.dot(np.transpose(input_weights), input_layer)
             hidden_activations = np.array(sigmoid(hidden_layer, epsilon))
-            # print("hidden activations", hidden_activations)
 
             output_layer = (np.dot(np.transpose(hidden_weights), hidden_activations))
             output_activations = np.array(sigmoid(output_layer, epsilon))
-            # print("output activations", output_activations)
 
             actual = int(row[0])
             guess = np.argmax(output_activations)
@@ -105,23 +113,27 @@ def feed_forward_training(data, testing_data, one_hot_list):
             if int(actual) == int(guess):
                 correct += 1
 
-        error = correct / len(testing_data)
-        tqdm.write("\nPercent Error:")
-        print(error)
-        epoch += 1
+        errors.append(correct / len(testing_data))
+
+    print_errors(errors)
 
 
 def main():
 
+    choice = input("Enter Choice:\n1. MNIST for values 0-1\n2. MNIST for values 0-4\n")
     print("Loading...")
-    filename = "data/mnist_train_0_1.csv"
-    training_data = np.loadtxt(filename, delimiter=',')
 
-    if filename == "data/mnist_train_0_1.csv":
+    if int(choice) == 1:
+        filename = "data/mnist_train_0_1.csv"
         testing_file = "data/mnist_test_0_1.csv"
-    elif filename == "data/mnist_train_0_4.csv":
+    elif int(choice) == 2:
+        filename = "data/mnist_train_0_4.csv"
         testing_file = "data/mnist_test_0_4.csv"
+    else:
+        print("Invalid choice. Goodbye!")
+        sys.exit()
 
+    training_data = np.loadtxt(filename, delimiter=',')
     testing_data = np.loadtxt(testing_file, delimiter=',')
 
     one_hot = one_hot_lists(filename)
