@@ -47,18 +47,20 @@ def print_errors(errors):
 
 # create a neural network with feed forward method
 # use back-propagation to train neural network
-def feed_forward_training(data, testing_data, one_hot_list):
+def feed_forward_training(data, testing_data, one_hot_list, num_output_nodes):
 
-    alpha = 0.005
+    alpha = 0.001
+    print("Alpha =",alpha)
     epsilon = 0.0001
     hidden_layer_nodes = 5
+    print("Hidden Layers =",hidden_layer_nodes)
 
     # 1. initialize weights in network to small random numbers
     input_weights = np.random.uniform(low=-1, high=1, size=(784, hidden_layer_nodes))
-    hidden_weights = np.random.uniform(low=-1, high=1, size=(hidden_layer_nodes, 2))
+    hidden_weights = np.random.uniform(low=-1, high=1, size=(hidden_layer_nodes, num_output_nodes))
 
     errors = []
-    for epoch in range(10):
+    for epoch in range(5):
 
         for row in tqdm(data):
 
@@ -114,6 +116,7 @@ def feed_forward_training(data, testing_data, one_hot_list):
                 correct += 1
 
         errors.append(correct / len(testing_data))
+        print(errors)
 
     print_errors(errors)
 
@@ -126,9 +129,11 @@ def main():
     if int(choice) == 1:
         filename = "data/mnist_train_0_1.csv"
         testing_file = "data/mnist_test_0_1.csv"
+        num_outputs = 2
     elif int(choice) == 2:
         filename = "data/mnist_train_0_4.csv"
         testing_file = "data/mnist_test_0_4.csv"
+        num_outputs = 5
     else:
         print("Invalid choice. Goodbye!")
         sys.exit()
@@ -137,6 +142,6 @@ def main():
     testing_data = np.loadtxt(testing_file, delimiter=',')
 
     one_hot = one_hot_lists(filename)
-    feed_forward_training(training_data, testing_data, one_hot)
+    feed_forward_training(training_data, testing_data, one_hot, num_outputs)
 
 main()
