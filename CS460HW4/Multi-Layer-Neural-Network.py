@@ -55,6 +55,7 @@ def print_errors(errors):
         print("Epoch {}: {}% accuracy.".format(i+1, errors[i]*100))
 
 
+# trains feed forward with back propagation
 def training(input_weights, hidden_weights, data, alpha, bias, epsilon, one_hot_list):
 
     # for each example
@@ -103,6 +104,7 @@ def training(input_weights, hidden_weights, data, alpha, bias, epsilon, one_hot_
     return input_weights, hidden_weights
 
 
+# tests each row in given dataset and outputs error
 def testing(input_weights, hidden_weights, testing_data, alpha, bias, epsilon):
 
     correct = 0
@@ -115,19 +117,24 @@ def testing(input_weights, hidden_weights, testing_data, alpha, bias, epsilon):
         # 2. given an example, run the network
         input_layer = row[1:]
 
+        # find the activations of each node in hidden layer
         hidden_layer = np.dot(np.transpose(input_weights), input_layer)
         hidden_activations = np.array(sigmoid(hidden_layer, epsilon))
         hidden_activations[-1] = bias
 
+        # find activations of each node in output layer
         output_layer = (np.dot(np.transpose(hidden_weights), hidden_activations))
         output_activations = np.array(sigmoid(output_layer, epsilon))
 
+        # find actual and guess values
         actual = int(row[0])
         guess = np.argmax(output_activations)
 
+        # compare and store if correct
         if int(actual) == int(guess):
             correct += 1
 
+    # calculate and return error
     error = correct / len(testing_data)
     return error
 
@@ -166,9 +173,11 @@ def neural_network(data, testing_data, one_hot_list, num_output_nodes):
 
 def main():
 
+    # ask for user input regarding which MNIST set they would like to use
     choice = input("Enter Choice:\n1. MNIST for values 0-1\n2. MNIST for values 0-4\n")
     print("Loading...")
 
+    # base training and testing file off user input
     if int(choice) == 1:
         filename = "data/mnist_train_0_1.csv"
         testing_file = "data/mnist_test_0_1.csv"
@@ -185,7 +194,10 @@ def main():
     training_data = np.loadtxt(filename, delimiter=',')
     testing_data = np.loadtxt(testing_file, delimiter=',')
 
+    # find one hot list according to training file selected
     one_hot = one_hot_lists(filename)
+
+    # train and test neural net
     neural_network(training_data, testing_data, one_hot, num_outputs)
 
 main()
