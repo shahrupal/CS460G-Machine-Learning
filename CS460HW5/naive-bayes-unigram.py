@@ -2,7 +2,9 @@ import nltk
 nltk.download('punkt')
 
 
-# insert each unique token and the number of occurrences into dictionary
+# output dictionary, which includes:
+# each unique token as key
+# and the number of occurrences as well as the probability of each token as values
 def count_tokens(tokens):
 
     token_dictionary = {}
@@ -11,7 +13,8 @@ def count_tokens(tokens):
 
         if tokens[i] not in token_dictionary:
             token_count = tokens.count(tokens[i])
-            token_dictionary.update({tokens[i]: token_count})
+            token_probability = token_count / len(tokens)
+            token_dictionary[tokens[i]] = [token_count, token_probability]
 
     return token_dictionary
 
@@ -35,8 +38,6 @@ def main():
     juliet_dictionary = count_tokens(juliet_tokens)
     macbeth_dictionary = count_tokens(macbeth_tokens)
     romeo_dictionary = count_tokens(romeo_tokens)
-
-
 
 
 
