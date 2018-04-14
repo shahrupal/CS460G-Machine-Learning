@@ -93,7 +93,7 @@ def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbet
 
     # calculate and output individual accuracies
     accuracy = correct / total
-    print('{} Accuracy: {}'.format(character_names[character], round(accuracy*100, 4)))
+    print('{} Accuracy: {}%'.format(character_names[character], round(accuracy*100, 4)))
 
 def main():
 
