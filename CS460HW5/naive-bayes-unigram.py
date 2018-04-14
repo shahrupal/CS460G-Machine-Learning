@@ -17,6 +17,7 @@ def count_tokens(tokens):
 
 
 # given the trainings files and a specific test file, this outputs the accuracy of classifying text from the test file
+# output number of lines classified correctly and total number of lines (used to calculate total accuracy later)
 def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens):
 
     character_names = ['Hamlet', 'Juliet', 'Macbeth', 'Romeo']
@@ -77,6 +78,7 @@ def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbet
     # calculate and output individual accuracies
     accuracy = correct / total
     print('{} Accuracy: {}%'.format(character_names[character], round(accuracy*100, 4)))
+    return correct, total
 
 def main():
 
@@ -112,9 +114,11 @@ def main():
 
     # test on each file
     print("UNIGRAM CLASSIFICATION")
-    testing(0, hamlet_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
-    testing(1, juliet_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
-    testing(2, macbeth_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
-    testing(3, romeo_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
+    hamlet_accuracy, hamlet_total = testing(0, hamlet_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
+    juliet_accuracy, juliet_total = testing(1, juliet_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
+    macbeth_accuracy, macbeth_total = testing(2, macbeth_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
+    romeo_accuracy, romeo_total = testing(3, romeo_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
 
+    overall_accuracy = (hamlet_accuracy + juliet_accuracy + macbeth_accuracy + romeo_accuracy) / (hamlet_total + juliet_total + macbeth_total + romeo_total)
+    print("Total Accuracy: {}%".format(round(overall_accuracy*100, 4)))
 main()
