@@ -1,8 +1,7 @@
 import math
 
 # output dictionary, which includes:
-# each unique token as key
-# and the number of occurrences as well as the probability (utilizes log) of each token as values bni
+# each unique token as key + the number of occurrences of the key as the value
 def count_tokens(tokens):
 
     token_dictionary = {}
@@ -15,6 +14,8 @@ def count_tokens(tokens):
 
     return token_dictionary
 
+
+# given a list of unigram tokens, output a new list with bigram tokens
 def create_bigram_tokens(unigram_tokens):
 
     bigram_tokens = []
@@ -29,9 +30,10 @@ def create_bigram_tokens(unigram_tokens):
         else:
             index += 1
 
-    print(bigram_tokens)
     return bigram_tokens
 
+
+# given the trainings files and a specific test file, this outputs the accuracy of classifying text from the test file
 def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens):
 
     character_names = ['Hamlet', 'Juliet', 'Macbeth', 'Romeo']
@@ -43,58 +45,53 @@ def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbet
     total = 0
     p = []
 
+    # iterate through each word in the given test file
     for i in range(len(test_tokens)):
 
-        # print('-----------------')
-        # print(test_tokens[i])
+        # calculate probability that the word is from each file -> (# of occurrences in file) / (total words in file)
+        # if there are no occurrences, create pseudo count to avoid zero but less than 1 / largest_training_file_size
+        if test_tokens[i] in hamlet_dictionary: hamlet_probability += math.log10(hamlet_dictionary[test_tokens[i]][0] / len(hamlet_train_tokens))
+        else: hamlet_probability += math.log10(1 / len(hamlet_train_tokens))
 
-        if test_tokens[i] in hamlet_dictionary:
-            hamlet_probability += math.log10(hamlet_dictionary[test_tokens[i]][0] / len(hamlet_train_tokens))
-            # print('hamlet')
-        else:
-            hamlet_probability += math.log10(1 / len(hamlet_train_tokens))
+        if test_tokens[i] in juliet_dictionary: juliet_probability += math.log10(juliet_dictionary[test_tokens[i]][0] / len(juliet_train_tokens))
+        else: juliet_probability += math.log10(1 / len(hamlet_train_tokens))
 
-        if test_tokens[i] in juliet_dictionary:
-            juliet_probability += math.log10(juliet_dictionary[test_tokens[i]][0] / len(juliet_train_tokens))
-            # print('juliet')
-        else:
-            juliet_probability += math.log10(1 / len(hamlet_train_tokens)) # all are this so probability is not zero but also smaller than 1 / largest_training_file
+        if test_tokens[i] in macbeth_dictionary: macbeth_probability += math.log10(macbeth_dictionary[test_tokens[i]][0] / len(macbeth_train_tokens))
+        else: macbeth_probability += math.log10(1 / len(hamlet_train_tokens))
 
-        if test_tokens[i] in macbeth_dictionary:
-            macbeth_probability += math.log10(macbeth_dictionary[test_tokens[i]][0] / len(macbeth_train_tokens))
-            # print('macbeth')
-        else:
-            macbeth_probability += math.log10(1 / len(hamlet_train_tokens))
+        if test_tokens[i] in romeo_dictionary: romeo_probability += math.log10(romeo_dictionary[test_tokens[i]][0] / len(romeo_train_tokens))
+        else: romeo_probability += math.log10(1 / len(hamlet_train_tokens))
 
-        if test_tokens[i] in romeo_dictionary:
-            romeo_probability += math.log10(romeo_dictionary[test_tokens[i]][0] / len(romeo_train_tokens))
-            # print('romeo')
-        else:
-            romeo_probability += math.log10(1 / len(hamlet_train_tokens))
-
+        # calculate the prior probabilities - the number of words in file divided total number of words in all files
         prior_hamlet = len(hamlet_train_tokens) / (len(hamlet_train_tokens) + len(juliet_train_tokens) + len(macbeth_train_tokens) + len(romeo_train_tokens))
         prior_juliet = len(juliet_train_tokens) / (len(hamlet_train_tokens) + len(juliet_train_tokens) + len(macbeth_train_tokens) + len(romeo_train_tokens))
         prior_macbeth = len(macbeth_train_tokens) / (len(hamlet_train_tokens) + len(juliet_train_tokens) + len(macbeth_train_tokens) + len(romeo_train_tokens))
         prior_romeo = len(romeo_train_tokens) / (len(hamlet_train_tokens) + len(juliet_train_tokens) + len(macbeth_train_tokens) + len(romeo_train_tokens))
 
+        # we are testing on each line individually
         if '<eol>' in test_tokens[i]:
 
+            # add prior probabilities to sum of probability character said each word in line
             p.append(math.log10(prior_hamlet) + hamlet_probability)
             p.append(math.log10(prior_juliet) + juliet_probability)
             p.append(math.log10(prior_macbeth) + macbeth_probability)
             p.append(math.log10(prior_romeo) + romeo_probability)
 
+            # if the largest overall probability is the correct character, add to 'correct' variable
             if p.index(max(p)) == character:
                 correct += 1
 
+            # count total number of lines in file
             total += 1
 
+            # reset variables after analyzing line
             hamlet_probability = 0
             juliet_probability = 0
             macbeth_probability = 0
             romeo_probability = 0
             p = []
 
+    # calculate and output individual accuracies
     accuracy = correct / total
     print('{} Accuracy: {}'.format(character_names[character], round(accuracy*100, 4)))
 
@@ -106,17 +103,17 @@ def main():
     macbeth_training_content = open("Training Files/macbeth_train.txt").read()
     romeo_training_content = open("Training Files/romeo_train.txt").read()
 
-    # tokenize files
+    # create unigram tokens for training files
     unigram_hamlet_train_tokens = hamlet_training_content.split()
     unigram_juliet_train_tokens = juliet_training_content.split()
     unigram_macbeth_train_tokens = macbeth_training_content.split()
     unigram_romeo_train_tokens = romeo_training_content.split()
 
+    # create bigram tokens for training files
     hamlet_train_tokens = create_bigram_tokens(unigram_hamlet_train_tokens)
     juliet_train_tokens = create_bigram_tokens(unigram_juliet_train_tokens)
     macbeth_train_tokens = create_bigram_tokens(unigram_macbeth_train_tokens)
     romeo_train_tokens = create_bigram_tokens(unigram_romeo_train_tokens)
-
 
     # dictionary for each character with tokens and respective counts + probabilities
     hamlet_dictionary = count_tokens(hamlet_train_tokens)
@@ -124,33 +121,29 @@ def main():
     macbeth_dictionary = count_tokens(macbeth_train_tokens)
     romeo_dictionary = count_tokens(romeo_train_tokens)
 
-    # TEST
     # open testing files
     hamlet_testing_content = open("Testing Files/hamlet_test.txt").read()
     juliet_testing_content = open("Testing Files/juliet_test.txt").read()
     macbeth_testing_content = open("Testing Files/macbeth_test.txt").read()
     romeo_testing_content = open("Testing Files/romeo_test.txt").read()
 
-    # tokenize testing files
+    # create unigram tokens for testing files
     unigram_hamlet_test_tokens = hamlet_testing_content.split()
     unigram_juliet_test_tokens = juliet_testing_content.split()
     unigram_macbeth_test_tokens = macbeth_testing_content.split()
     unigram_romeo_test_tokens = romeo_testing_content.split()
 
+    # create bigram tokens for testing files
     hamlet_test_tokens = create_bigram_tokens(unigram_hamlet_test_tokens)
     juliet_test_tokens = create_bigram_tokens(unigram_juliet_test_tokens)
     macbeth_test_tokens = create_bigram_tokens(unigram_macbeth_test_tokens)
     romeo_test_tokens = create_bigram_tokens(unigram_romeo_test_tokens)
 
-
+    # test on each file
     print("BIGRAM CLASSIFICATION")
-
-    # testing(0, hamlet_test_tokens, hamlet_train_tokens, hamlet_dictionary, juliet_train_tokens, juliet_dictionary, macbeth_train_tokens, macbeth_dictionary, romeo_train_tokens, romeo_dictionary)
     testing(0, hamlet_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
     testing(1, juliet_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
     testing(2, macbeth_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
     testing(3, romeo_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
-
-
 
 main()
