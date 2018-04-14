@@ -1,9 +1,8 @@
 import math
 
-
 # output dictionary, which includes:
 # each unique token as key
-# and the number of occurrences as well as the probability (utilizes log) of each token as values
+# and the number of occurrences as well as the probability (utilizes log) of each token as values bni
 def count_tokens(tokens):
 
     token_dictionary = {}
@@ -12,75 +11,88 @@ def count_tokens(tokens):
 
         if tokens[i] not in token_dictionary:
             token_count = tokens.count(tokens[i])
-            token_probability = math.log(token_count / len(tokens))
-            token_dictionary[tokens[i]] = [token_count, token_probability]
+            token_dictionary[tokens[i]] = [token_count]
 
     return token_dictionary
 
+def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens):
 
-# pass index of probability that should be highest
-# 0-hamlet, 1-juliet, 2-macbeth, 3-romeo
-def testing(correct_index, test_tokens, hamlet_train_tokens, hamlet_dictionary, juliet_train_tokens, juliet_dictionary, macbeth_train_tokens, macbeth_dictionary, romeo_train_tokens, romeo_dictionary):
-
-    correct_lines = 0
-    total_lines = 0
     hamlet_probability = 0
     juliet_probability = 0
     macbeth_probability = 0
     romeo_probability = 0
-    probabilities = []
+    correct = 0
+    total = 0
+    p = []
+    no_hamlet = 0
+    no_juliet = 0
+    no_macbeth = 0
+    no_romeo = 0
 
-    # iterate through test file
     for i in range(len(test_tokens)):
 
-        # compare with all test files
+        # print('-----------------')
+        # print(test_tokens[i])
 
-        # HAMLET
-        # if test token is in dictionary, add appropriate probability
         if test_tokens[i] in hamlet_dictionary:
-            hamlet_probability += hamlet_dictionary[test_tokens[i]][1]
-        # otherwise, add pseudo count
+            hamlet_probability += math.log10(hamlet_dictionary[test_tokens[i]][0] / len(hamlet_train_tokens))
+            # print('hamlet')
         else:
-            hamlet_probability += math.log(1 / len(hamlet_train_tokens))
+            no_hamlet += 1
+            hamlet_probability += math.log10(1 / len(hamlet_train_tokens))
 
-        # JULIET
         if test_tokens[i] in juliet_dictionary:
-            juliet_probability += juliet_dictionary[test_tokens[i]][1]
+            juliet_probability += math.log10(juliet_dictionary[test_tokens[i]][0] / len(juliet_train_tokens))
+            # print('juliet')
         else:
-            juliet_probability += math.log(1 / len(juliet_train_tokens))
+            no_juliet += 1
+            juliet_probability += math.log10(1 / len(hamlet_train_tokens))
 
-        # MACBETH
         if test_tokens[i] in macbeth_dictionary:
-            macbeth_probability += macbeth_dictionary[test_tokens[i]][1]
+            macbeth_probability += math.log10(macbeth_dictionary[test_tokens[i]][0] / len(macbeth_train_tokens))
+            # print('macbeth')
         else:
-            macbeth_probability += math.log(1 / len(macbeth_train_tokens))
+            no_macbeth += 1
+            macbeth_probability += math.log10(1 / len(hamlet_train_tokens))
 
-        # ROMEO
         if test_tokens[i] in romeo_dictionary:
-            romeo_probability += romeo_dictionary[test_tokens[i]][1]
+            romeo_probability += math.log10(romeo_dictionary[test_tokens[i]][0] / len(romeo_train_tokens))
+            # print('romeo')
         else:
-            romeo_probability += math.log(1 / len(romeo_train_tokens))
+            no_romeo += 1
+            romeo_probability += math.log10(1 / len(hamlet_train_tokens))
+
+        prior_hamlet = len(hamlet_train_tokens) / (len(hamlet_train_tokens) + len(juliet_train_tokens) + len(macbeth_train_tokens) + len(romeo_train_tokens))
+        prior_juliet = len(juliet_train_tokens) / (len(hamlet_train_tokens) + len(juliet_train_tokens) + len(macbeth_train_tokens) + len(romeo_train_tokens))
+        prior_macbeth = len(macbeth_train_tokens) / (len(hamlet_train_tokens) + len(juliet_train_tokens) + len(macbeth_train_tokens) + len(romeo_train_tokens))
+        prior_romeo = len(romeo_train_tokens) / (len(hamlet_train_tokens) + len(juliet_train_tokens) + len(macbeth_train_tokens) + len(romeo_train_tokens))
+
 
         if test_tokens[i] == '<eol>':
 
-            probabilities.append(hamlet_probability)
-            probabilities.append(juliet_probability)
-            probabilities.append(macbeth_probability)
-            probabilities.append(romeo_probability)
+            p.append(math.log10(prior_hamlet) + hamlet_probability)
+            p.append(math.log10(prior_juliet) + juliet_probability)
+            p.append(math.log10(prior_macbeth) + macbeth_probability)
+            p.append(math.log10(prior_romeo) + romeo_probability)
 
-            print(probabilities)
-            if probabilities.index(max(probabilities)) == correct_index:
-                correct_lines += 1
-                print('yes')
+            # print(p)
 
-            total_lines += 1
+            if p.index(max(p)) == character:
+                correct += 1
+
+            total += 1
+
             hamlet_probability = 0
             juliet_probability = 0
             macbeth_probability = 0
             romeo_probability = 0
-            probabilities = []
+            p = []
 
-    print(correct_lines, total_lines)
+
+
+    # print(no_hamlet, no_juliet, no_macbeth, no_romeo)
+    accuracy = correct / total
+    print(accuracy)
 
 def main():
 
@@ -102,8 +114,6 @@ def main():
     macbeth_dictionary = count_tokens(macbeth_train_tokens)
     romeo_dictionary = count_tokens(romeo_train_tokens)
 
-    print(hamlet_dictionary)
-
     # TEST
     # open testing files
     hamlet_testing_content = open("Testing Files/hamlet_test.txt").read()
@@ -117,10 +127,12 @@ def main():
     macbeth_test_tokens = macbeth_testing_content.split()
     romeo_test_tokens = romeo_testing_content.split()
 
-    testing(0, hamlet_test_tokens, hamlet_train_tokens, hamlet_dictionary, juliet_train_tokens, juliet_dictionary, macbeth_train_tokens, macbeth_dictionary, romeo_train_tokens, romeo_dictionary)
-    # testing(1, juliet_test_tokens, hamlet_train_tokens, hamlet_dictionary, juliet_train_tokens, juliet_dictionary, macbeth_train_tokens, macbeth_dictionary, romeo_train_tokens, romeo_dictionary)
-    # testing(2, macbeth_test_tokens, hamlet_train_tokens, hamlet_dictionary, juliet_train_tokens, juliet_dictionary, macbeth_train_tokens, macbeth_dictionary, romeo_train_tokens, romeo_dictionary)
-    # testing(3, romeo_test_tokens, hamlet_train_tokens, hamlet_dictionary, juliet_train_tokens, juliet_dictionary, macbeth_train_tokens, macbeth_dictionary, romeo_train_tokens, romeo_dictionary)
+    # testing(0, hamlet_test_tokens, hamlet_train_tokens, hamlet_dictionary, juliet_train_tokens, juliet_dictionary, macbeth_train_tokens, macbeth_dictionary, romeo_train_tokens, romeo_dictionary)
+    testing(0, hamlet_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
+    testing(1, juliet_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
+    testing(2, macbeth_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
+    testing(3, romeo_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
+
 
 
 main()
