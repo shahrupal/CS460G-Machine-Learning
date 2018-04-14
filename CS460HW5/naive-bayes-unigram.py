@@ -17,6 +17,7 @@ def count_tokens(tokens):
 
 def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens):
 
+    character_names = ['Hamlet', 'Juliet', 'Macbeth', 'Romeo']
     hamlet_probability = 0
     juliet_probability = 0
     macbeth_probability = 0
@@ -24,10 +25,6 @@ def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbet
     correct = 0
     total = 0
     p = []
-    no_hamlet = 0
-    no_juliet = 0
-    no_macbeth = 0
-    no_romeo = 0
 
     for i in range(len(test_tokens)):
 
@@ -38,28 +35,24 @@ def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbet
             hamlet_probability += math.log10(hamlet_dictionary[test_tokens[i]][0] / len(hamlet_train_tokens))
             # print('hamlet')
         else:
-            no_hamlet += 1
             hamlet_probability += math.log10(1 / len(hamlet_train_tokens))
 
         if test_tokens[i] in juliet_dictionary:
             juliet_probability += math.log10(juliet_dictionary[test_tokens[i]][0] / len(juliet_train_tokens))
             # print('juliet')
         else:
-            no_juliet += 1
-            juliet_probability += math.log10(1 / len(hamlet_train_tokens))
+            juliet_probability += math.log10(1 / len(hamlet_train_tokens)) # all are this so probability is not zero but also smaller than 1 / largest_training_file
 
         if test_tokens[i] in macbeth_dictionary:
             macbeth_probability += math.log10(macbeth_dictionary[test_tokens[i]][0] / len(macbeth_train_tokens))
             # print('macbeth')
         else:
-            no_macbeth += 1
             macbeth_probability += math.log10(1 / len(hamlet_train_tokens))
 
         if test_tokens[i] in romeo_dictionary:
             romeo_probability += math.log10(romeo_dictionary[test_tokens[i]][0] / len(romeo_train_tokens))
             # print('romeo')
         else:
-            no_romeo += 1
             romeo_probability += math.log10(1 / len(hamlet_train_tokens))
 
         prior_hamlet = len(hamlet_train_tokens) / (len(hamlet_train_tokens) + len(juliet_train_tokens) + len(macbeth_train_tokens) + len(romeo_train_tokens))
@@ -75,8 +68,6 @@ def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbet
             p.append(math.log10(prior_macbeth) + macbeth_probability)
             p.append(math.log10(prior_romeo) + romeo_probability)
 
-            # print(p)
-
             if p.index(max(p)) == character:
                 correct += 1
 
@@ -88,11 +79,8 @@ def testing(character, test_tokens, hamlet_dictionary, juliet_dictionary, macbet
             romeo_probability = 0
             p = []
 
-
-
-    # print(no_hamlet, no_juliet, no_macbeth, no_romeo)
     accuracy = correct / total
-    print(accuracy)
+    print('{} Accuracy: {}'.format(character_names[character], round(accuracy*100, 4)))
 
 def main():
 
@@ -126,6 +114,8 @@ def main():
     juliet_test_tokens = juliet_testing_content.split()
     macbeth_test_tokens = macbeth_testing_content.split()
     romeo_test_tokens = romeo_testing_content.split()
+
+    print("UNIGRAM CLASSIFICATION")
 
     # testing(0, hamlet_test_tokens, hamlet_train_tokens, hamlet_dictionary, juliet_train_tokens, juliet_dictionary, macbeth_train_tokens, macbeth_dictionary, romeo_train_tokens, romeo_dictionary)
     testing(0, hamlet_test_tokens, hamlet_dictionary, juliet_dictionary, macbeth_dictionary, romeo_dictionary, hamlet_train_tokens, juliet_train_tokens, macbeth_train_tokens, romeo_train_tokens)
